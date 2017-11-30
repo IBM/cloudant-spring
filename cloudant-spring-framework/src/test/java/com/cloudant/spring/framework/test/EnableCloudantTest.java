@@ -25,7 +25,6 @@ import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
@@ -52,17 +51,41 @@ public class EnableCloudantTest {
 
     @Test
     public void builderBeanCreation() {
-        when(mockBuilder.build()).thenReturn(mockClient);
         
-        this.context.register(MockApplicationConfig.class);
+        this.context.register(MockCloudantClientConfig.class);
         EnvironmentTestUtils.addEnvironment(this.context, "cloudant.url=http://cloudant.com");
         this.context.refresh();
         ClientBuilder builder = this.context.getBean(ClientBuilder.class);
         assertNotNull(builder);
     }
 
+    @Test
+    public void clientBeanCreation() {
+        when(mockBuilder.build()).thenReturn(mockClient);
+        
+        this.context.register(MockClientBuilderConfig.class);
+        EnvironmentTestUtils.addEnvironment(this.context, "cloudant.url=http://cloudant.com");
+        this.context.refresh();
+        CloudantClient client = this.context.getBean(CloudantClient.class);
+        assertEquals(mockClient, client);
+    }
+
 	@EnableCloudant
     @Configuration
-    protected static class MockApplicationConfig {}
+    protected static class MockCloudantClientConfig {
+        @Bean
+        public CloudantClient client() {
+            return mockClient;
+        }
+    }
+
+	@EnableCloudant
+    @Configuration
+    protected static class MockClientBuilderConfig {
+        @Bean
+        public ClientBuilder builder() {
+            return mockBuilder;
+        }
+    }
 
 }

@@ -28,7 +28,7 @@ public class CloudantConfiguration {
     CloudantConfigurationProperties config;
 
     @Bean
-    public ClientBuilder builder() throws CloudantConfigurationException {
+    public ClientBuilder builder() {
         ClientBuilder builder = ClientBuilder
             .url(config.getUrl())
             .username(config.getUsername())
