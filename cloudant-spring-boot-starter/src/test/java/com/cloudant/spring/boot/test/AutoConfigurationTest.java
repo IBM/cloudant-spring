@@ -55,7 +55,6 @@ public class AutoConfigurationTest {
 
     @Test
     public void builderBeanCreation() {
-        when(mockBuilder.build()).thenReturn(mockClient);
         
         this.context.register(MockCloudantClientConfig.class, CloudantAutoConfiguration.class);
         EnvironmentTestUtils.addEnvironment(this.context, "cloudant.url=http://cloudant.com");
@@ -76,14 +75,15 @@ public class AutoConfigurationTest {
 
     @Test
     public void databaseBeanCreation() {
+        Database mockDb = mock(Database.class);
         when(mockBuilder.build()).thenReturn(mockClient);
-        when(mockClient.database("testName", true)).thenReturn(mock(Database.class));
+        when(mockClient.database("testName", true)).thenReturn(mockDb);
 
         this.context.register(MockCloudantClientConfig.class, MockClientBuilderConfig.class, CloudantAutoConfiguration.class);
         EnvironmentTestUtils.addEnvironment(this.context, "cloudant.db=testName");
         this.context.refresh();
         Database db = this.context.getBean(Database.class);
-        assertNotNull(db);
+        assertEquals(mockDb, db);
     }
 
 

@@ -14,11 +14,22 @@
 
 package com.cloudant.spring.framework.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
+import com.cloudant.client.api.ClientBuilder;
+import com.cloudant.client.api.CloudantClient;
+import com.cloudant.spring.framework.EnableCloudant;
 
 public class EnableCloudantTest {
 
@@ -36,5 +47,22 @@ public class EnableCloudantTest {
         }
     }
 
+    private static ClientBuilder mockBuilder = mock(ClientBuilder.class);
+    private static CloudantClient mockClient = mock(CloudantClient.class);
+
+    @Test
+    public void builderBeanCreation() {
+        when(mockBuilder.build()).thenReturn(mockClient);
+        
+        this.context.register(MockApplicationConfig.class);
+        EnvironmentTestUtils.addEnvironment(this.context, "cloudant.url=http://cloudant.com");
+        this.context.refresh();
+        ClientBuilder builder = this.context.getBean(ClientBuilder.class);
+        assertNotNull(builder);
+    }
+
+	@EnableCloudant
+    @Configuration
+    protected static class MockApplicationConfig {}
 
 }
