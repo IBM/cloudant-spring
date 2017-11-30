@@ -56,26 +56,30 @@ public class CloudantConfiguration {
     }
 
     @Bean
-    public CloudantClient client() throws CloudantConfigurationException {
-        CloudantClient client;
+    public ClientBuilder builder() throws CloudantConfigurationException {
+        ClientBuilder builder;
         try {
-        client = ClientBuilder
+            builder = ClientBuilder
             .url(new URL(this.url))
             .username(this.username)
-            .password(this.password)
-            .build();
+            .password(this.password);
         } catch (MalformedURLException e) {
             if(this.url == null) {
                 throw new CloudantConfigurationException("Cloudant url provided was null");
             }
             throw new CloudantConfigurationException("Url provided is not a valid url string");
         }
-        return client;
+        return builder;
     }
 
     @Bean
-    public Database database() throws CloudantConfigurationException {
-        Database db = this.client().database(this.db, true);
+    public CloudantClient client(ClientBuilder builder) {
+        return builder.build();
+    }
+
+    @Bean
+    public Database database(CloudantClient client) {
+        Database db = client.database(this.db, true);
         return db;
     }
 }
