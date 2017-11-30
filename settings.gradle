@@ -1,0 +1,2 @@
+include ':cloudant-spring-boot-starter', ':cloudant-spring-framework'
+rootProject.name = 'java-cloudant'

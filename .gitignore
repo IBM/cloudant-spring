@@ -102,6 +102,10 @@ local.properties
 .loadpath
 .recommenders
 
+# Eclipse project metadata
+.project
+.classpath
+
 # External tool builders
 .externalToolBuilders/
 
@@ -139,3 +143,6 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+
+# VSCode IDE specific
+.vscode
