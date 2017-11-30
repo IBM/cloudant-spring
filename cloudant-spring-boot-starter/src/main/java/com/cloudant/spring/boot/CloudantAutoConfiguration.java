@@ -21,70 +21,39 @@ import com.cloudant.client.api.Database;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @Configuration
-@ConfigurationProperties(prefix="cloudant")
+@EnableConfigurationProperties(CloudantConfigurationProperties.class)
 public class CloudantAutoConfiguration {
 
-    private String url;
-
-    private String username;
-
-    private String password;
-
-    private String db;
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setDb(String db) {
-        this.db = db;
-    }
+    @Autowired
+    private CloudantConfigurationProperties config;
 
     @Bean
     @ConditionalOnMissingBean
-    public ClientBuilder clientBuilder() throws CloudantConfigurationException {
-        ClientBuilder builder;
-        try {
-            builder = ClientBuilder
-                .url(new URL(this.url))
-                .username(this.username)
-                .password(this.password);
-        } catch (MalformedURLException e) {
-            if(this.url == null) {
-                throw new CloudantConfigurationException("Cloudant url provided was null");
-            }
-            throw new CloudantConfigurationException("Url provided is not a valid url string");
-        }
+    public ClientBuilder clientBuilder() {
+        ClientBuilder builder = ClientBuilder
+            .url(config.getUrl())
+            .username(config.getUsername())
+            .password(config.getPassword());
         return builder;
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public CloudantClient client(ClientBuilder builder) throws CloudantConfigurationException {
+    public CloudantClient client(ClientBuilder builder) {
         return builder.build();
     }
 
     @Bean
     @ConditionalOnProperty(name = "cloudant.db")
-    public Database database(CloudantClient client) throws CloudantConfigurationException {
-        Database db = client.database(this.db, true);
+    public Database database(CloudantClient client) {
+        Database db = client.database(config.getDb(), true);
         return db;
     }
 }

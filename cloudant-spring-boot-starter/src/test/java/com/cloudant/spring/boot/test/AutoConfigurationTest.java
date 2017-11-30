@@ -78,6 +78,7 @@ public class AutoConfigurationTest {
     @Test
     public void databaseBeanCreation() {
         when(mockBuilder.build()).thenReturn(mockClient);
+        when(mockClient.database("testName", true)).thenReturn(mock(Database.class));
         
         this.context.register(MockCloudantClientConfig.class, MockClientBuilderConfig.class, CloudantAutoConfiguration.class);
         EnvironmentTestUtils.addEnvironment(this.context, "cloudant.db=testName");
