@@ -30,7 +30,6 @@ import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 import com.cloudant.spring.boot.CloudantAutoConfiguration;
 
@@ -79,7 +78,7 @@ public class AutoConfigurationTest {
     public void databaseBeanCreation() {
         when(mockBuilder.build()).thenReturn(mockClient);
         when(mockClient.database("testName", true)).thenReturn(mock(Database.class));
-        
+
         this.context.register(MockCloudantClientConfig.class, MockClientBuilderConfig.class, CloudantAutoConfiguration.class);
         EnvironmentTestUtils.addEnvironment(this.context, "cloudant.db=testName");
         this.context.refresh();
@@ -92,7 +91,6 @@ public class AutoConfigurationTest {
     @Configuration
     protected static class MockClientBuilderConfig {
         @Bean
-        @Primary
         public ClientBuilder builder() {
             return mockBuilder;
         }
@@ -101,7 +99,6 @@ public class AutoConfigurationTest {
     @Configuration
     protected static class MockCloudantClientConfig {
         @Bean
-        @Primary
         public CloudantClient client() {
             return mockClient;
         }
