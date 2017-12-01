@@ -21,6 +21,21 @@ import java.lang.annotation.Target;
 
 import org.springframework.context.annotation.Import;
 
+/**
+ * Add this annotation to an {@code @Configuration} class to expose a
+ * ClientBuilder and CloudantClient bean connected to the Cloudant
+ * instance specified as Spring properties.
+ * 
+ * <h1>Usage Examples</h1>
+ * <code>
+ * &#064;Configuration
+ * &#064;EnableCloudant
+ * public class CloudantConfig{}
+ * </code>
+ * 
+ * @author Katherine Stanley
+ * @since 0.0.1
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Import({CloudantConfiguration.class, CloudantConfigurationProperties.class})

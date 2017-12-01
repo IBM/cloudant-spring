@@ -62,11 +62,11 @@ This section contains simple examples of connecting to Cloudant using the two li
 
 ### Spring Boot Applications
 
-You must provide the following properties:
+To enable auto-configuration you must provide the following properties to define the connection to your Cloudant instance:
 
-* cloudant.url
-* cloudant.username
-* cloudant.password
+* `cloudant.url`
+* `cloudant.username`
+* `cloudant.password`
 
 For example in an `application.properties` file:
 
@@ -105,7 +105,7 @@ public List<Greeting> getAllDocsAsGreetings() {
 }
 ~~~
 
-To provide custom connection data you can override the `com.cloudant.client.api.ClientBuilder` bean:
+To provide custom connection options you can override the `com.cloudant.client.api.ClientBuilder` bean and provide your own properties:
 
 ~~~ java
 @SpringBootApplication
@@ -115,24 +115,41 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 
+    @Value("${cloudant.account}")
+    private String account;
+
+    @Value("${cloudant.username}")
+    private String username;
+
+    @Value("${cloudant.password}")
+    private String password
+
     @Bean
     public ClientBuilder builder() {
         ClientBuilder builder = ClientBuilder
-            .account("example")
-            .username("exampleUser")
-            .password("examplePassword");
+            .account(this.account)
+            .username(this.username)
+            .password(this.password);
         return builder;
     }
 }
 ~~~
 
+application.properties:
+
+~~~
+cloudant.account=myAccount
+cloudant.username=myUsername
+cloudant.password=myPassword
+~~~
+
 ### Spring Framework Applications
 
-You must provide the following properties:
+You must provide the following properties to define the connection to your Cloudant instance:
 
-* cloudant.url
-* cloudant.username
-* cloudant.password
+* `cloudant.url`
+* `cloudant.username`
+* `cloudant.password`
 
 To enable the creation of the `com.cloudant.client.api.CloudantClient` bean you must add an `com.cloudant.spring.framework.EnableCloudant` annotation to your application configuration:
 
@@ -155,8 +172,10 @@ public List<String> getAllDbs() {
 
 ## Related documentation
 * [Cloudant library for Java](https://github.com/cloudant/java-cloudant/)
-* [Cloudant docs](https://console.bluemix.net/docs/services/Cloudant/cloudant.html#overview)
+* [Cloudant documentation](https://console.bluemix.net/docs/services/Cloudant/cloudant.html#overview)
 * [Cloudant Learning Center](https://developer.ibm.com/clouddataservices/cloudant-learning-center/)
+* [Spring Boot documentation](https://projects.spring.io/spring-boot/)
+* [Spring Framework documentation](https://projects.spring.io/spring-framework/)
 
 # Development
 
@@ -179,10 +198,8 @@ Unless required by applicable law or agreed to in writing, software distributed 
 ### Issues
 
 Before opening a new issue please consider the following:
-* Only the latest release is supported. If at all possible please try to reproduce the issue using
-the latest version.
+* Please try to reproduce the issue using the latest version.
 * Please check the [existing issues](https://github.com/cloudant/cloudant-spring/issues)
 to see if the problem has already been reported. Note that the default search
 includes only open issues, but it may already have been closed.
-* Cloudant customers should contact Cloudant support for urgent issues.
 * When opening a new issue [here in github](../../issues) please complete the template fully.
