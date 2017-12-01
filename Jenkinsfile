@@ -24,14 +24,17 @@ stage('Build') {
 }
 
 stage('QA') {
-  // Run the check target
   node {
     unstash name: 'built'
     try {
-      sh './gradlew check'
+      sh './gradlew -Dfindbugs.xml.report=true findbugsMain'
     } finally {
-      junit '**/build/test-results/*.xml'
       step([$class: 'FindBugsPublisher', pattern: '**/build/reports/findbugs/*.xml'])
+    }
+    try {
+      sh './gradlew test'
+    } finally {
+      junit '**/build/test-results/test/*.xml'
     }
   }
 }
