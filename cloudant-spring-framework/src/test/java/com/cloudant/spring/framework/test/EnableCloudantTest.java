@@ -70,7 +70,7 @@ public class EnableCloudantTest {
         assertEquals(mockClient, client);
     }
 
-	@EnableCloudant
+    @EnableCloudant
     @Configuration
     protected static class MockCloudantClientConfig {
         @Bean
@@ -79,7 +79,7 @@ public class EnableCloudantTest {
         }
     }
 
-	@EnableCloudant
+    @EnableCloudant
     @Configuration
     protected static class MockClientBuilderConfig {
         @Bean

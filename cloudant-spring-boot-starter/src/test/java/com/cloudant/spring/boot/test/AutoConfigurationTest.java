@@ -35,7 +35,6 @@ import com.ibm.cloudant.spring.boot.CloudantAutoConfiguration;
 
 public class AutoConfigurationTest {
 
-
     private AnnotationConfigApplicationContext context;
     
     @Before
@@ -62,7 +61,6 @@ public class AutoConfigurationTest {
         ClientBuilder builder = this.context.getBean(ClientBuilder.class);
         assertNotNull(builder);
     }
-
     @Test
     public void clientBeanCreation() {
         when(mockBuilder.build()).thenReturn(mockClient);
@@ -79,14 +77,13 @@ public class AutoConfigurationTest {
         when(mockBuilder.build()).thenReturn(mockClient);
         when(mockClient.database("testName", true)).thenReturn(mockDb);
 
-        this.context.register(MockCloudantClientConfig.class, MockClientBuilderConfig.class, CloudantAutoConfiguration.class);
+        this.context.register(MockCloudantClientConfig.class, MockClientBuilderConfig.class,
+            CloudantAutoConfiguration.class);
         EnvironmentTestUtils.addEnvironment(this.context, "cloudant.db=testName");
         this.context.refresh();
         Database db = this.context.getBean(Database.class);
         assertEquals(mockDb, db);
     }
-
-
 
     @Configuration
     protected static class MockClientBuilderConfig {
