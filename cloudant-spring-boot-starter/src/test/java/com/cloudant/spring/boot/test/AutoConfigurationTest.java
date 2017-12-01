@@ -31,7 +31,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.cloudant.spring.boot.CloudantAutoConfiguration;
+import com.ibm.cloudant.spring.boot.CloudantAutoConfiguration;
 
 public class AutoConfigurationTest {
 

@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
-import com.cloudant.spring.framework.EnableCloudant;
+import com.ibm.cloudant.spring.framework.EnableCloudant;
 
 public class EnableCloudantTest {
 
