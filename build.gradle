@@ -130,6 +130,7 @@ subprojects {
 
         // Augment the pom with additional information
         pom.project {
+          name rootProject.name
           packaging 'jar'
           url 'https://cloudant.com'
           licenses {
