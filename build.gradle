@@ -11,6 +11,7 @@
  * either express or implied. See the License for the specific language governing permissions
  * and limitations under the License.
  */
+
 subprojects {
   apply plugin: 'java'
   apply plugin: 'maven'
@@ -31,7 +32,8 @@ subprojects {
   }
 
   // Common dependencies
-  def springVersion = '4.3.12.RELEASE'
+  ext.springVersion = '4.3.12.RELEASE'
+  ext.springBootVersion = '1.5.9.RELEASE'
   dependencies {
     // java-cloudant client
     compile group: 'com.cloudant', name: 'cloudant-client', version: '2.11.0'
@@ -41,6 +43,7 @@ subprojects {
     compile group: 'org.springframework', name: 'spring-beans', version: springVersion
     // testing
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
   }
 
   // Include variable debug info in the compiled classes

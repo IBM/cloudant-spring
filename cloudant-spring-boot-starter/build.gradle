@@ -11,10 +11,8 @@
  * either express or implied. See the License for the specific language governing permissions
  * and limitations under the License.
  */
-def springBootVersion = '1.5.9.RELEASE'
+
 dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot', version: springBootVersion
   compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: springBootVersion
-  //test dependencies
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
 }
