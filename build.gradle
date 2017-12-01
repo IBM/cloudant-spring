@@ -131,6 +131,8 @@ subprojects {
         // Augment the pom with additional information
         pom.project {
           name rootProject.name
+          description 'Spring configuration for the official Cloudant library for Java'
+          inceptionYear '2017'
           packaging 'jar'
           url 'https://cloudant.com'
           licenses {
