@@ -1,5 +1,5 @@
 /*
- * Copyright © 2015, 2017 IBM Corp. All rights reserved.
+ * Copyright © 2017 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -12,23 +12,29 @@
  * and limitations under the License.
  */
 
-package com.cloudant.spring.framework;
+package com.ibm.cloudant.spring.boot;
 
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
+import com.cloudant.client.api.Database;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @Configuration
-public class CloudantConfiguration {
+@EnableConfigurationProperties(CloudantConfigurationProperties.class)
+public class CloudantAutoConfiguration {
 
     @Autowired
-    CloudantConfigurationProperties config;
+    private CloudantConfigurationProperties config;
 
     @Bean
-    public ClientBuilder builder() {
+    @ConditionalOnMissingBean
+    public ClientBuilder clientBuilder() {
         ClientBuilder builder = ClientBuilder
             .url(config.getUrl())
             .username(config.getUsername())
@@ -37,8 +43,15 @@ public class CloudantConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public CloudantClient client(ClientBuilder builder) {
         return builder.build();
     }
 
+    @Bean
+    @ConditionalOnProperty(name = "cloudant.db")
+    public Database database(CloudantClient client) {
+        Database db = client.database(config.getDb(), true);
+        return db;
+    }
 }

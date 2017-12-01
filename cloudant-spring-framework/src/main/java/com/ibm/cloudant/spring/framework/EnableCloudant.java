@@ -12,7 +12,7 @@
  * and limitations under the License.
  */
 
-package com.cloudant.spring.framework;
+package com.ibm.cloudant.spring.framework;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

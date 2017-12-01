@@ -12,22 +12,25 @@
  * and limitations under the License.
  */
 
-package com.cloudant.spring.framework;
+package com.ibm.cloudant.spring.boot;
 
 import java.net.URL;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
+@ConfigurationProperties(prefix="cloudant")
 public class CloudantConfigurationProperties {
 
-    @Value("${cloudant.url}")
     private URL url;
-
-    @Value("${cloudant.username}")
+    
     private String username;
 
-    @Value("${cloudant.password}")
     private String password;
 
+    private String db;
+
+    public void setUrl(URL url) {
+        this.url = url;
+    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -35,6 +38,10 @@ public class CloudantConfigurationProperties {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setDb(String db) {
+        this.db = db;
     }
 
     public URL getUrl() {
@@ -47,6 +54,10 @@ public class CloudantConfigurationProperties {
 
     public String getPassword() {
         return this.password;
+    }
+
+    public String getDb() {
+        return this.db;
     }
 
 }
