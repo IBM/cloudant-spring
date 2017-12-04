@@ -20,12 +20,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix="cloudant")
 public class CloudantConfigurationProperties {
 
+    /** URL for cloudant service. This URL should not include the username or password. **/
     private URL url;
     
+    /** Cloudant username */
     private String username;
 
+    /** Cloudant password */ 
     private String password;
 
+    /** Cloudant database */
     private String db;
 
     public void setUrl(URL url) {
