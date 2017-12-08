@@ -12,7 +12,23 @@
  * and limitations under the License.
  */
 
+
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-maven'
+
+buildscript {
+    repositories {
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+    dependencies {
+        classpath 'io.spring.gradle:propdeps-plugin:0.0.9.RELEASE'
+    }
+}
+
 dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot', version: springBootVersion
   compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: springBootVersion
+  optional group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: springBootVersion
 }
+
+compileJava.dependsOn(processResources)
