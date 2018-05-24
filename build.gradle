@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 IBM Corp. All rights reserved.
+ * Copyright © 2018 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -12,6 +12,10 @@
  * and limitations under the License.
  */
 
+plugins {
+    id "com.github.spotbugs" version "1.6.1"
+}
+
 subprojects {
   apply plugin: 'java'
   apply plugin: 'maven'
@@ -23,6 +27,7 @@ subprojects {
   // If the version says "snapshot" anywhere assume it is not a release
   ext.isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
 
+  // 1.8 is ok for boot 1.x and 2.x
   sourceCompatibility = 1.8
   targetCompatibility = 1.8
 
@@ -32,19 +37,23 @@ subprojects {
   }
 
   // Common dependencies
-  ext.springVersion = '4.3.12.RELEASE'
-  ext.springBootVersion = '1.5.9.RELEASE'
+  ext.compileWithSpringVersion = '5.0.6.RELEASE'
+  ext.compileWithBootVersion = '2.0.2.RELEASE'
+
+  ext.testWithSpringVersion = '4.3.13.RELEASE'
+  ext.testWithBootVersion = '1.5.9.RELEASE'
+  
   dependencies {
     // java-cloudant client
     compile group: 'com.cloudant', name: 'cloudant-client', version: '2.11.0'
     // spring
-    compile group: 'org.springframework', name: 'spring-core', version: springVersion
-    compile group: 'org.springframework', name: 'spring-context', version: springVersion
-    compile group: 'org.springframework', name: 'spring-beans', version: springVersion
-    // testing
+    compile group: 'org.springframework', name: 'spring-core', version: compileWithSpringVersion
+    compile group: 'org.springframework', name: 'spring-context', version: compileWithSpringVersion
+    compile group: 'org.springframework', name: 'spring-beans', version: compileWithSpringVersion
+      // testing
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
-  }
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: testWithBootVersion    
+    }
 
   // Include variable debug info in the compiled classes
   compileJava.options.debugOptions.debugLevel = "source,lines,vars"
@@ -165,19 +174,25 @@ subprojects {
   }
 
   // Findbugs
-  apply plugin: 'findbugs'
-  findbugs {
-    toolVersion = "3.0.1"
+  apply plugin: 'com.github.spotbugs'
+  spotbugs {
+    toolVersion = "3.1.3"
     reportLevel = "low"
     effort = "max"
+    includeFilter = file("findbugs-exclude.xml")
   }
-
-  tasks.withType(FindBugs) {
+  tasks.withType(com.github.spotbugs.SpotBugsTask) {
     // Currently only one report type can be used toggle which with a property
-    boolean generateXML = Boolean.getBoolean("findbugs.xml.report")
+    boolean generateXML = Boolean.getBoolean("spotbugs.xml.report")
     reports {
       xml.enabled = generateXML
       html.enabled = !generateXML
     }
   }
+
+  test { 
+    systemProperty 'BOOT_VERSION', testWithBootVersion
+    systemProperty 'FRAMEWORK_VERSION', testWithSpringVersion
+  }
+
 }
