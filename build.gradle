@@ -191,8 +191,9 @@ subprojects {
   }
 
   test { 
-    systemProperty 'BOOT_VERSION', testWithBootVersion
-    systemProperty 'FRAMEWORK_VERSION', testWithSpringVersion
+      systemProperty 'BOOT_VERSION', testWithBootVersion
+      systemProperty 'FRAMEWORK_VERSION', testWithSpringVersion
   }
-
 }
+
+

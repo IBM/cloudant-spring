@@ -69,9 +69,3 @@ def switchSpringVersions(DependencyResolveDetails details){
 }
 
 compileJava.dependsOn(processResources)
-
-
-test { 
-    systemProperty 'BOOT_VERSION', testWithBootVersion
-    systemProperty 'FRAMEWORK_VERSION', testWithSpringVersion
-}
