@@ -31,18 +31,7 @@ dependencies {
   optional group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: compileWithBootVersion
 }
 
-configurations {
-    //Deprecated by gradle, using newer configurations below. 
-    // testCompile {
-    //     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-    //        switchSpringVersions(details)
-    //     }
-    // } 
-    // testRuntime {
-    //     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-    //        switchSpringVersions(details)
-    //     }
-    // }    
+configurations {  
     //Update the resolvers for the test configs to switch the Spring Versions.
     testCompileClasspath {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
