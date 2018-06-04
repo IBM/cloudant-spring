@@ -29,7 +29,7 @@ stage('QA') {
     try {
       sh './gradlew -Dfindbugs.xml.report=true findbugsMain'
     } finally {
-      step([$class: 'FindBugsPublisher', pattern: '**/build/reports/findbugs/*.xml'])
+      step([$class: 'FindBugsPublisher', pattern: '**/build/reports/spotbugs/*.xml'])
     }
     try {
       sh './gradlew test'

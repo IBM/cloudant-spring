@@ -25,7 +25,8 @@ import com.cloudant.client.api.Database;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+import org.springframework.core.SpringVersion;
+import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -51,6 +52,18 @@ public class AutoConfigurationTest {
 
     private static ClientBuilder mockBuilder = mock(ClientBuilder.class);
     private static CloudantClient mockClient = mock(CloudantClient.class);
+
+    @Test
+    public void bootVersionCheck() {
+        String version = SpringBootVersion.getVersion();
+        assertEquals(System.getProperty("BOOT_VERSION"), version);
+    }
+
+    @Test
+    public void frameworkVersionCheck() {
+        String version = SpringVersion.getVersion();
+        assertEquals(System.getProperty("FRAMEWORK_VERSION"), version);
+    }
 
     @Test
     public void builderBeanCreation() {
