@@ -40,8 +40,8 @@ subprojects {
   ext.compileWithSpringVersion = '5.0.6.RELEASE'
   ext.compileWithBootVersion = '2.0.2.RELEASE'
 
-  ext.testWithSpringVersion = '4.3.13.RELEASE'
-  ext.testWithBootVersion = '1.5.9.RELEASE'
+  ext.testWithSpringVersion = '4.3.17.RELEASE'
+  ext.testWithBootVersion = '1.5.13.RELEASE'
   
   dependencies {
     // java-cloudant client
