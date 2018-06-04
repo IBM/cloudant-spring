@@ -27,7 +27,7 @@ stage('QA') {
   node {
     unstash name: 'built'
     try {
-      sh './gradlew -Dfindbugs.xml.report=true findbugsMain'
+      sh './gradlew -Dspotbugs.xml.report=true spotbugsMain'
     } finally {
       step([$class: 'FindBugsPublisher', pattern: '**/build/reports/spotbugs/*.xml'])
     }
