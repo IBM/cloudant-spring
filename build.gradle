@@ -45,7 +45,7 @@ subprojects {
   
   dependencies {
     // java-cloudant client
-    compile group: 'com.cloudant', name: 'cloudant-client', version: '2.11.0'
+    compile group: 'com.cloudant', name: 'cloudant-client', version: '2.13.0'
     // spring
     compile group: 'org.springframework', name: 'spring-core', version: compileWithSpringVersion
     compile group: 'org.springframework', name: 'spring-context', version: compileWithSpringVersion
