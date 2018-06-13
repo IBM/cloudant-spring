@@ -1,4 +1,4 @@
-# 0.0.3 (UNRELEASED)
+# 0.0.3 (2018-06-13)
 - [IMPROVED] javadoc on configuration attributes (IDE tooltips).
 - [IMPROVED] Added Spring configuration meta-data for improved IDE context help.
 - [IMPROVED] Builds against Spring Boot 2.x
