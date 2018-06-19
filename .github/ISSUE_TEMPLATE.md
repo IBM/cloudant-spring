@@ -29,7 +29,7 @@ Got a 400 bad request
 - Version(s) that are affected by this issue.
     > 2.0.2
 - Java version including vendor and platform
-    >1.8.0_151 OpenJDK macOS
+    > 1.8.0_151 OpenJDK macOS
 - Spring framework or boot version
-    >Spring boot 2.0.2
+    > Spring boot 2.0.2
 -->
