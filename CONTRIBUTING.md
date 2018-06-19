@@ -26,8 +26,6 @@ Please read the agreement and acknowledge it by ticking the appropriate box in t
 
 - [x] Tick to sign-off your agreement to the Developer Certificate of Origin (DCO) 1.1
 
-<!-- Append library specific information here
-
 ## General information
 
 Cloudant-spring is written in Java and uses Gradle as its build tool.
