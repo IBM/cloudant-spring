@@ -1,9 +1,19 @@
-Contributing
-=======
+# Contributing
 
-Cloudant-spring is written in Java and uses Gradle as its build tool.
+## Issues
 
-## Developer Certificate of Origin
+Please [read these guidelines](http://ibm.biz/cdt-issue-guide) before opening an issue.
+If you still need to open an issue then we ask that you complete the template as
+fully as possible.
+
+## Pull requests
+
+We welcome pull requests, but ask contributors to keep in mind the following:
+
+* Only PRs with the template completed will be accepted
+* We will not accept PRs for user specific functionality
+
+### Developer Certificate of Origin
 
 In order for us to accept pull-requests, the contributor must sign-off a
 [Developer Certificate of Origin (DCO)](DCO1.1.txt). This clarifies the
@@ -16,18 +26,31 @@ Please read the agreement and acknowledge it by ticking the appropriate box in t
 
 - [x] Tick to sign-off your agreement to the Developer Certificate of Origin (DCO) 1.1
 
+## General information
+
+Cloudant-spring is written in Java and uses Gradle as its build tool.
+
+### Projects
+There are two sub-projects in cloudant-spring each of which produces an artifact for publishing.
+
+#### cloudant-spring-boot-starter
+The cloudant-spring-boot-starter jar provides a custom [Spring autoconfiguration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html) for a `com.cloudant.client.api.CloudantClient` bean, `com.cloudant.client.api.ClientBuilder` bean and `com.cloudant.client.api.Database` bean.
+
+#### cloudant-spring-framework
+The cloudant-spring-framework jar provides a custom annotation called `com.cloudant.spring.framework.EnableCloudant` which when applied provides a `com.cloudant.client.api.CloudantClient` bean and `com.cloudant.client.api.ClientBuilder` bean.
+
 ## Requirements
 
 - gradle
 - Java 1.8
 
-## Installing requirements
+### Installing requirements
 
-### Java
+#### Java
 
 Follow the instructions for your platform.
 
-### Gradle
+#### Gradle
 
 The project uses the gradle wrapper to download the specified version of gradle.
 The gradle wrapper is run by using the following command:
@@ -37,7 +60,7 @@ $ ./gradlew
 ```
 Note: on windows the command to run is gradlew.bat rather than gradlew
 
-# Building the library
+## Building
 
 The project should build out of the box with:
 
@@ -45,15 +68,7 @@ The project should build out of the box with:
 $ ./gradlew build
 ```
 
-## Projects
-There are two sub-projects in cloudant-spring each of which produces an artifact for publishing.
-
-### cloudant-spring-boot-starter
-The cloudant-spring-boot-starter jar provides a custom [Spring autoconfiguration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html) for a `com.cloudant.client.api.CloudantClient` bean, `com.cloudant.client.api.ClientBuilder` bean and `com.cloudant.client.api.Database` bean.
-
-### cloudant-spring-framework
-The cloudant-spring-framework jar provides a custom annotation called `com.cloudant.spring.framework.EnableCloudant` which when applied provides a `com.cloudant.client.api.CloudantClient` bean and `com.cloudant.client.api.ClientBuilder` bean.
-
+## Testing
 
 ### Running the tests
 
