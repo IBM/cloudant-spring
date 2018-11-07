@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 IBM Corp. All rights reserved.
+ * Copyright © 2017, 2018 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -16,23 +16,23 @@ package com.cloudant.spring.boot.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.ibm.cloudant.spring.boot.CloudantAutoConfiguration;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.SpringVersion;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.ibm.cloudant.spring.boot.CloudantAutoConfiguration;
+import org.springframework.core.SpringVersion;
 
 public class AutoConfigurationTest {
 
@@ -93,6 +93,20 @@ public class AutoConfigurationTest {
         this.context.register(MockCloudantClientConfig.class, MockClientBuilderConfig.class,
             CloudantAutoConfiguration.class);
         EnvironmentTestUtils.addEnvironment(this.context, "cloudant.db=testName");
+        this.context.refresh();
+        Database db = this.context.getBean(Database.class);
+        assertEquals(mockDb, db);
+    }
+
+    @Test
+    public void databaseBeanCreationWithCreateFalse() {
+        Database mockDb = mock(Database.class);
+        when(mockBuilder.build()).thenReturn(mockClient);
+        when(mockClient.database("testName", false)).thenReturn(mockDb);
+
+        this.context.register(MockCloudantClientConfig.class, MockClientBuilderConfig.class,
+                CloudantAutoConfiguration.class);
+        EnvironmentTestUtils.addEnvironment(this.context, "cloudant.db=testName", "cloudant.createDb=false");
         this.context.refresh();
         Database db = this.context.getBean(Database.class);
         assertEquals(mockDb, db);

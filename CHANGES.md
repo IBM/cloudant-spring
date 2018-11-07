@@ -1,3 +1,7 @@
+# Unreleased
+- [NEW] Configuration option `cloudant.createDb` for creating the database. Can be disabled to allow
+ use of a legacy API key.
+
 # 0.0.3 (2018-06-13)
 - [IMPROVED] javadoc on configuration attributes (IDE tooltips).
 - [IMPROVED] Added Spring configuration meta-data for improved IDE context help.

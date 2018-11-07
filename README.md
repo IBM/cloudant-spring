@@ -25,7 +25,7 @@ The library is split into two parts:
 Gradle:
 ```groovy
 dependencies {
-    compile group: 'com.cloudant', name: 'cloudant-spring-boot-starter', version: '0.0.1'
+    compile group: 'com.cloudant', name: 'cloudant-spring-boot-starter', version: '0.0.3'
 }
 ```
 
@@ -34,7 +34,7 @@ Maven:
 <dependency>
   <groupId>com.cloudant</groupId>
   <artifactId>cloudant-spring-boot-starter</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.3</version>
 </dependency>
 ~~~
 
@@ -43,7 +43,7 @@ Maven:
 Gradle:
 ```groovy
 dependencies {
-    compile group: 'com.cloudant', name: 'cloudant-spring-framework', version: '0.0.1'
+    compile group: 'com.cloudant', name: 'cloudant-spring-framework', version: '0.0.3'
 }
 ```
 
@@ -52,7 +52,7 @@ Maven:
 <dependency>
   <groupId>com.cloudant</groupId>
   <artifactId>cloudant-spring-framework</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.3</version>
 </dependency>
 ~~~
 
@@ -103,6 +103,19 @@ private Database db;
 public List<Greeting> getAllDocsAsGreetings() {
     return List<Greeting> allDocs = db.getAllDocsRequestBuilder().includeDocs(true).build().getResponse().getDocsAs(Greeting.class);
 }
+~~~
+
+By default the database specified by `cloudant.db` will be created if it doesn't exist. You can
+change this behaviour with the `cloudant.createDb` configuration property. This is useful in cases
+where the supplied credentials don't have permission to create a database, such as when using a
+legacy API key. For example:
+
+~~~
+cloudant.url=http://cloudant.com
+cloudant.username=myCloudanLegacyAPIKey
+cloudant.password=myKeyPassphrase
+cloudant.db=myDb
+cloudant.createDb=false
 ~~~
 
 To provide custom connection options you can override the `com.cloudant.client.api.ClientBuilder` bean and provide your own properties:
@@ -187,7 +200,7 @@ The preferred approach for using cloudant-spring in other projects is to use the
 
 ### License
 
-Copyright © 2017 IBM Corp. All rights reserved.
+Copyright © 2017, 2018 IBM Corp. All rights reserved.
 
 Licensed under the apache license, version 2.0 (the "license"); you may not use this file except in compliance with the license.  you may obtain a copy of the license at
 

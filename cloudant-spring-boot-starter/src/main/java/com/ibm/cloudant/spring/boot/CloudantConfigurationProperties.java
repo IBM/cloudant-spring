@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 IBM Corp. All rights reserved.
+ * Copyright © 2017, 2018 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -14,8 +14,9 @@
 
 package com.ibm.cloudant.spring.boot;
 
-import java.net.URL;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.net.URL;
 
 @ConfigurationProperties(prefix="cloudant")
 public class CloudantConfigurationProperties {
@@ -31,6 +32,11 @@ public class CloudantConfigurationProperties {
 
     /** Cloudant database */
     private String db;
+
+    /** Create the named Cloudant database if it doesn't exist.
+     * Must be false if using a legacy API key.
+     */
+    private boolean createDb = true;
 
     public void setUrl(URL url) {
         this.url = url;
@@ -48,6 +54,10 @@ public class CloudantConfigurationProperties {
         this.db = db;
     }
 
+    public void setCreateDb(boolean createDb) {
+        this.createDb = createDb;
+    }
+
     public URL getUrl() {
         return this.url;
     }
@@ -62,6 +72,10 @@ public class CloudantConfigurationProperties {
 
     public String getDb() {
         return this.db;
+    }
+
+    public boolean getCreateDb() {
+        return this.createDb;
     }
 
 }
