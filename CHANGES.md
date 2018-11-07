@@ -1,4 +1,4 @@
-# Unreleased
+# 0.0.4 (2018-11-08)
 - [NEW] Configuration option `cloudant.createDb` for creating the database. Can be disabled to allow
  use of a legacy API key.
 
