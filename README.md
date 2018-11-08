@@ -25,7 +25,7 @@ The library is split into two parts:
 Gradle:
 ```groovy
 dependencies {
-    compile group: 'com.cloudant', name: 'cloudant-spring-boot-starter', version: '0.0.3'
+    compile group: 'com.cloudant', name: 'cloudant-spring-boot-starter', version: '0.0.4'
 }
 ```
 
@@ -34,7 +34,7 @@ Maven:
 <dependency>
   <groupId>com.cloudant</groupId>
   <artifactId>cloudant-spring-boot-starter</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 </dependency>
 ~~~
 
@@ -43,7 +43,7 @@ Maven:
 Gradle:
 ```groovy
 dependencies {
-    compile group: 'com.cloudant', name: 'cloudant-spring-framework', version: '0.0.3'
+    compile group: 'com.cloudant', name: 'cloudant-spring-framework', version: '0.0.4'
 }
 ```
 
@@ -52,7 +52,7 @@ Maven:
 <dependency>
   <groupId>com.cloudant</groupId>
   <artifactId>cloudant-spring-framework</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 </dependency>
 ~~~
 
