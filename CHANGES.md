@@ -1,3 +1,6 @@
+# Unreleased
+- [UPGRADED] java-cloudant dependency to version 2.19.1.
+
 # 0.0.4 (2018-11-08)
 - [NEW] Configuration option `cloudant.createDb` for creating the database. Can be disabled to allow
  use of a legacy API key.
