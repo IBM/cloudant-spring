@@ -29,7 +29,7 @@ stage('QA') {
     try {
       sh './gradlew -Dspotbugs.xml.report=true spotbugsMain'
     } finally {
-      step([$class: 'FindBugsPublisher', pattern: '**/build/reports/spotbugs/*.xml'])
+      recordIssues enabledForFailure: true, tool: spotBugs(pattern: '**/build/reports/spotbugs/*.xml')
     }
     try {
       sh './gradlew test'
