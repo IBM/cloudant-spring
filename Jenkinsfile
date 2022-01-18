@@ -16,7 +16,7 @@
 
 stage('Build') {
   // Checkout, build and assemble the source and doc
-  node {
+  node('sdks-gradle-executor')  {
     checkout scm
     sh './gradlew clean assemble'
     stash name: 'built'
@@ -24,12 +24,12 @@ stage('Build') {
 }
 
 stage('QA') {
-  node {
+  node('sdks-gradle-executor')  {
     unstash name: 'built'
     try {
       sh './gradlew -Dspotbugs.xml.report=true spotbugsMain'
     } finally {
-      step([$class: 'FindBugsPublisher', pattern: '**/build/reports/spotbugs/*.xml'])
+      recordIssues enabledForFailure: true, tool: spotBugs(pattern: '**/build/reports/spotbugs/*.xml')
     }
     try {
       sh './gradlew test'
@@ -42,7 +42,7 @@ stage('QA') {
 // Publish the master branch
 stage('Publish') {
   if (env.BRANCH_NAME == "master") {
-    node {
+    node('sdks-gradle-executor')  {
       checkout scm // re-checkout to be able to git tag
       unstash name: 'built'
       // read the version name and determine if it is a release build
