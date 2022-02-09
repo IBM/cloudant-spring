@@ -162,7 +162,7 @@ subprojects {
           developers {
             developer {
               name 'IBM Cloudant'
-              email 'support@cloudant.com'
+              email 'cldtsdks@us.ibm.com'
               url 'https://cloudant.com'
               organization 'IBM'
               organizationUrl 'http://www.ibm.com'
