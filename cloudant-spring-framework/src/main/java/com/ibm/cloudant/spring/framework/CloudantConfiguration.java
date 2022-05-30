@@ -14,31 +14,24 @@
 
 package com.ibm.cloudant.spring.framework;
 
-import com.cloudant.client.api.ClientBuilder;
-import com.cloudant.client.api.CloudantClient;
 
+import com.ibm.cloud.cloudant.internal.CloudantFactory;
+import com.ibm.cloud.cloudant.v1.Cloudant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 @Configuration
-public class CloudantConfiguration {
-
-    @Autowired
-    CloudantConfigurationProperties config;
+public class CloudantConfiguration extends com.ibm.cloudant.spring.common.CloudantConfiguration {
 
     @Bean
-    public ClientBuilder builder() {
-        ClientBuilder builder = ClientBuilder
-            .url(config.getUrl())
-            .username(config.getUsername())
-            .password(config.getPassword());
-        return builder;
+    public Cloudant cloudant(@Autowired CloudantFactory serviceFactory) {
+        return super.cloudant(serviceFactory);
     }
 
     @Bean
-    public CloudantClient client(ClientBuilder builder) {
-        return builder.build();
+    public CloudantFactory cloudantFactory(@Autowired Environment env) {
+        return super.cloudantFactory(env);
     }
-
 }

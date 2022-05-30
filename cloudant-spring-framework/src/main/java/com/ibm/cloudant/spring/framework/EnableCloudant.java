@@ -38,5 +38,5 @@ import org.springframework.context.annotation.Import;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import({CloudantConfiguration.class, CloudantConfigurationProperties.class})
+@Import({CloudantConfiguration.class})
 public @interface EnableCloudant{}

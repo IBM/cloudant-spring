@@ -13,8 +13,7 @@
  */
 
 apply plugin: 'java'
-apply plugin: 'propdeps'
-apply plugin: 'propdeps-maven'
+apply plugin: 'java-library'
 
 buildscript {
     repositories {
@@ -26,9 +25,13 @@ buildscript {
 }
 
 dependencies {
-  compile group: 'org.springframework.boot', name: 'spring-boot', version: compileWithBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: compileWithBootVersion
-  optional group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: compileWithBootVersion
+    // api?
+    api project(':cloudant-spring-common')
+    // TODO revisit these dependencies
+    implementation group: 'org.springframework.boot', name: 'spring-boot', version: compileWithBootVersion
+    implementation group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: compileWithBootVersion
+    implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: compileWithBootVersion
+    testImplementation project(path: ':cloudant-spring-common', configuration: 'sharedTest')
 }
 
 configurations {  
