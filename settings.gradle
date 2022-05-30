@@ -11,5 +11,4 @@
  * either express or implied. See the License for the specific language governing permissions
  * and limitations under the License.
  */
-include ':cloudant-spring-boot-starter', ':cloudant-spring-framework' 
-rootProject.name = 'cloudant-spring'
+rootProject.name = 'cloudant-spring-boot-starter'

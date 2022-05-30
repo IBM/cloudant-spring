@@ -1,0 +1,83 @@
+{
+  "properties": [
+    {
+      "name": "cloudant.username",
+      "type": "java.lang.String",
+      "description": "Cloudant username, for use with \"couchdb_session\" or \"basic\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.password",
+      "type": "java.lang.String",
+      "description": "Cloudant password, for use with \"couchdb_session\" or \"basic\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.auth.type",
+      "type": "java.lang.String",
+      "description": "Cloudant authentication method (or type).",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.bearer.token",
+      "type": "java.lang.String",
+      "description": "Cloudant bearer token, for use with \"bearerToken\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.iam.profile.id",
+      "type": "java.lang.String",
+      "description": "Cloudant IAM profile ID, for use with \"container\" or \"vpc\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.iam.profile.name",
+      "type": "java.lang.String",
+      "description": "Cloudant IAM profile name, for use with \"container\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.cr.token.filename",
+      "type": "java.lang.String",
+      "description": "Cloudant CR token filename, for use with \"container\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.iam.profile.crn",
+      "type": "java.lang.String",
+      "description": "Cloudant IAM profile CRN, for use with \"vpc\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.auth.url",
+      "type": "java.lang.String",
+      "description": "Cloudant auth URL, for use with \"iam\", \"container\", or \"vpc\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.scope",
+      "type": "java.lang.String",
+      "description": "Cloudant scope, for use with \"iam\", \"container\", or \"vpc\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.client.id",
+      "type": "java.lang.String",
+      "description": "Cloudant client ID, for use with \"iam\", \"container\", or \"vpc\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.client.secret",
+      "type": "java.lang.String",
+      "description": "Cloudant client secret, for use with \"iam\", \"container\", or \"vpc\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    },
+    {
+      "name": "cloudant.apikey",
+      "type": "java.lang.String",
+      "description": "Cloudant database IAM API key, for use with \"iam\" authentication.",
+      "sourceType": "com.ibm.cloudant.spring.boot.CloudantAutoConfiguration"
+    }
+  ]
+
+}

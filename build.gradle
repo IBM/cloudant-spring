@@ -12,6 +12,18 @@
  * and limitations under the License.
  */
 
+buildscript {
+    repositories {
+        maven { url 'https://repo.spring.io/plugins-release' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${compileWithBootVersion}")
+    }
+}
+
 plugins {
     id "com.github.spotbugs" version "5.0.13"
 }
