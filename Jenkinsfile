@@ -39,9 +39,9 @@ stage('QA') {
   }
 }
 
-// Publish the master branch
+// Publish the primary branch
 stage('Publish') {
-  if (env.BRANCH_NAME == "master") {
+  if (env.BRANCH_IS_PRIMARY) {
     node('sdks-gradle-executor')  {
       checkout scm // re-checkout to be able to git tag
       unstash name: 'built'
