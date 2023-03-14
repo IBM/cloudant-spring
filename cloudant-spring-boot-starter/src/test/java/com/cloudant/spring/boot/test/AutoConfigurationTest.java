@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017, 2018 IBM Corp. All rights reserved.
+ * Copyright © 2017, 2023 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -28,11 +28,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.SpringBootVersion;
-import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.SpringVersion;
+import org.springframework.test.context.support.TestPropertySourceUtils;
 
 public class AutoConfigurationTest {
 
@@ -69,7 +69,7 @@ public class AutoConfigurationTest {
     public void builderBeanCreation() {
         
         this.context.register(MockCloudantClientConfig.class, CloudantAutoConfiguration.class);
-        EnvironmentTestUtils.addEnvironment(this.context, "cloudant.url=http://cloudant.com");
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(this.context, "cloudant.url=http://cloudant.com");
         this.context.refresh();
         ClientBuilder builder = this.context.getBean(ClientBuilder.class);
         assertNotNull(builder);
@@ -92,7 +92,7 @@ public class AutoConfigurationTest {
 
         this.context.register(MockCloudantClientConfig.class, MockClientBuilderConfig.class,
             CloudantAutoConfiguration.class);
-        EnvironmentTestUtils.addEnvironment(this.context, "cloudant.db=testName");
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(this.context, "cloudant.db=testName");
         this.context.refresh();
         Database db = this.context.getBean(Database.class);
         assertEquals(mockDb, db);
@@ -106,7 +106,7 @@ public class AutoConfigurationTest {
 
         this.context.register(MockCloudantClientConfig.class, MockClientBuilderConfig.class,
                 CloudantAutoConfiguration.class);
-        EnvironmentTestUtils.addEnvironment(this.context, "cloudant.db=testName", "cloudant.createDb=false");
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(this.context, "cloudant.db=testName", "cloudant.createDb=false");
         this.context.refresh();
         Database db = this.context.getBean(Database.class);
         assertEquals(mockDb, db);

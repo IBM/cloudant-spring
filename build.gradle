@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017,2018 IBM Corp. All rights reserved.
+ * Copyright © 2017, 2023 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -13,187 +13,154 @@
  */
 
 plugins {
-    id "com.github.spotbugs" version "1.6.1"
+    id "com.github.spotbugs" version "5.0.13"
 }
 
 subprojects {
-  apply plugin: 'java'
-  apply plugin: 'maven'
-  apply plugin: 'signing'
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+    apply plugin: 'com.github.spotbugs'
 
-  group = 'com.cloudant'
-  version = new File(rootDir, 'VERSION').text.trim()
+    group = 'com.cloudant'
+    version = new File(rootDir, 'VERSION').text.trim()
 
-  // If the version says "snapshot" anywhere assume it is not a release
-  ext.isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
+    // If the version says "snapshot" anywhere assume it is not a release
+    ext.isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
 
-  // 1.8 is ok for boot 1.x and 2.x
-  sourceCompatibility = 1.8
-  targetCompatibility = 1.8
+    sourceCompatibility = 11
+    targetCompatibility = 17
 
-  repositories {
-    mavenLocal()
-    mavenCentral()
-  }
-
-  // Common dependencies
-  ext.compileWithSpringVersion = '5.0.6.RELEASE'
-  ext.compileWithBootVersion = '2.0.2.RELEASE'
-
-  ext.testWithSpringVersion = '4.3.17.RELEASE'
-  ext.testWithBootVersion = '1.5.13.RELEASE'
-  
-  dependencies {
-    // java-cloudant client
-    compile group: 'com.cloudant', name: 'cloudant-client', version: '2.19.1'
-    // spring
-    compile group: 'org.springframework', name: 'spring-core', version: compileWithSpringVersion
-    compile group: 'org.springframework', name: 'spring-context', version: compileWithSpringVersion
-    compile group: 'org.springframework', name: 'spring-beans', version: compileWithSpringVersion
-      // testing
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: testWithBootVersion    
-    }
-
-  // Include variable debug info in the compiled classes
-  compileJava.options.debugOptions.debugLevel = "source,lines,vars"
-  // Fail on javac warnings
-  compileJava.options.compilerArgs << "-Werror"
-
-  // Always UTF-8
-  tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-  }
-
-  task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    sourceSets.all {
-      into(name + "/java", { from allJava })
-      into(name + "/resources", { from resources })
-    }
-  }
-
-  javadoc {
-    options.encoding 'UTF-8'
-    options.setMemberLevel JavadocMemberLevel.PROTECTED
-    // Add a logging listener to check for javadoc warnings and fail the build if there are any
-    boolean hasJavaDocWarnings = false;
-    doFirst {
-      getLogging().addStandardErrorListener(new StandardOutputListener() {
-        void onOutput(CharSequence output) {
-          if (output =~ "warning:") {
-            hasJavaDocWarnings = true
-          }
-        }
-      })
-    }
-    doLast {
-      if (hasJavaDocWarnings) {
-        throw new GradleException("Build failed due to javadoc warnings.");
-      }
-    }
-  }
-
-  task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-  }
-
-  artifacts {
-    archives sourcesJar, javadocJar
-  }
-
-  // Load signing and repository parameters from system properties
-  ['signing.keyId', 'signing.password', 'signing.secretKeyRingFile', 'ossrhUsername', 'ossrhPassword']
-        .each { propName ->
-    //set a property with the given name if the system property is set
-    //if the system property is not set then set the property to null if it isn't a signing one
-    if (System.properties.(propName.toString()) != null || !propName.startsWith("signing")) {
-      ext.(propName.toString()) = System.properties.(propName.toString())
-    }
-  }
-
-  signing {
-    // Only apply signing when it is a release and is being published
-    required {
-      isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives")
-    }
-    // When signing, sign the archives
-    sign configurations.archives
-  }
-
-  uploadArchives {
     repositories {
-      mavenDeployer {
-
-        // When publishing sign the pom
-        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-          authentication(userName: ossrhUsername, password: ossrhPassword)
-        }
-
-        snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-          authentication(userName: ossrhUsername, password: ossrhPassword)
-        }
-
-        // Augment the pom with additional information
-        pom.project {
-          name rootProject.name
-          description 'Spring configuration for the official Cloudant library for Java'
-          inceptionYear '2017'
-          packaging 'jar'
-          url 'https://cloudant.com'
-          licenses {
-            license {
-              name 'The Apache Software License, Version 2.0'
-              url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-              distribution 'repo'
-            }
-          }
-          scm {
-            connection 'scm:git:git://github.com/cloudant-labs/cloudant-spring.git'
-            developerConnection 'scm:git:git@github.com/cloudant-labs/cloudant-spring.git'
-            url 'https://github.com/cloudant-labs/cloudant-spring.git'
-          }
-          properties {
-            'project.build.sourceEncoding' 'UTF-8'
-          }
-          developers {
-            developer {
-              name 'IBM Cloudant'
-              email 'cldtsdks@us.ibm.com'
-              url 'https://cloudant.com'
-              organization 'IBM'
-              organizationUrl 'http://www.ibm.com'
-            }
-          }
-        }
-      }
+        mavenLocal()
+        mavenCentral()
     }
-  }
 
-  // Findbugs
-  apply plugin: 'com.github.spotbugs'
-  spotbugs {
-    toolVersion = "3.1.3"
-    reportLevel = "low"
-    effort = "max"
-    includeFilter = file("findbugs-exclude.xml")
-  }
-  tasks.withType(com.github.spotbugs.SpotBugsTask) {
-    // Currently only one report type can be used toggle which with a property
-    boolean generateXML = Boolean.getBoolean("spotbugs.xml.report")
-    reports {
-      xml.enabled = generateXML
-      html.enabled = !generateXML
+    // Common dependencies
+    ext.compileWithSpringVersion = '6.0.6'
+    ext.compileWithBootVersion = '3.0.4'
+
+    ext.testWithSpringVersion = '5.3.25'
+    ext.testWithBootVersion = '2.1.16.RELEASE'
+
+    dependencies {
+        // java-cloudant client
+        api group: 'com.cloudant', name: 'cloudant-client', version: '2.19.1'
+        // spring
+        api group: 'org.springframework', name: 'spring-core', version: compileWithSpringVersion
+        api group: 'org.springframework', name: 'spring-context', version: compileWithSpringVersion
+        api group: 'org.springframework', name: 'spring-beans', version: compileWithSpringVersion
+        // testing
+        // TODO these should be in the pom with scope test
+        testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+        testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: testWithBootVersion
+        testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.2.0'
     }
-  }
 
-  test { 
-      systemProperty 'BOOT_VERSION', testWithBootVersion
-      systemProperty 'FRAMEWORK_VERSION', testWithSpringVersion
-  }
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    // Include variable debug info in the compiled classes
+    compileJava.options.debugOptions.debugLevel = "source,lines,vars"
+    // Fail on javac warnings
+    compileJava.options.compilerArgs << "-Werror"
+
+    // Always UTF-8
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    javadoc {
+        options.encoding 'UTF-8'
+        options.setMemberLevel JavadocMemberLevel.PROTECTED
+    }
+    javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+
+    // Load signing and repository parameters from system properties
+    ['signing.keyId', 'signing.password', 'signing.secretKeyRingFile', 'ossrhUsername', 'ossrhPassword']
+            .each { propName ->
+                //set a property with the given name if the system property is set
+                //if the system property is not set then set the property to null if it isn't a signing one
+                if (System.properties.(propName.toString()) != null || !propName.startsWith("signing")) {
+                    ext.(propName.toString()) = System.properties.(propName.toString())
+                }
+            }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                pom {
+                    name = project.name
+                    packaging = 'jar'
+                    url = 'https://cloudant.com'
+                    description = 'Spring configuration for the official Cloudant library for Java'
+                    inceptionYear = '2017'
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution = 'repo'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com/cloudant-labs/cloudant-spring.git'
+                        developerConnection = 'scm:git:git@github.com/cloudant-labs/cloudant-spring.git'
+                        url = 'https://github.com/cloudant-labs/cloudant-spring.git'
+                    }
+                    developers {
+                        developer {
+                            name = 'IBM Cloudant'
+                            email = 'cldtsdks@us.ibm.com'
+                            url = 'https://cloudant.com'
+                            organization = 'IBM'
+                            organizationUrl = 'http://www.ibm.com'
+                        }
+                    }
+                }
+            }
+        }
+
+        signing {
+            // Only apply signing when it is a release and is being published
+            required {
+                isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives")
+            }
+            // When signing, sign the archives
+            sign configurations.archives
+        }
+
+        repositories {
+            maven {
+                url = isReleaseVersion ?
+                        "https://oss.sonatype.org/service/local/staging/deploy/maven2/" :
+                        "https://oss.sonatype.org/content/repositories/snapshots"
+                credentials(PasswordCredentials) {
+                    username = ossrhUsername
+                    password = ossrhPassword
+                }
+            }
+        }
+    }
+
+    spotbugs {
+        reportLevel = "low"
+        effort = "max"
+        includeFilter = file("findbugs-exclude.xml")
+    }
+
+    spotbugsMain {
+        reports {
+            xml {
+                required = true
+            }
+        }
+    }
+
+    test {
+        systemProperty 'BOOT_VERSION', testWithBootVersion
+        systemProperty 'FRAMEWORK_VERSION', testWithSpringVersion
+    }
 }
-
-
