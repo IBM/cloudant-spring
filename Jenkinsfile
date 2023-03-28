@@ -23,16 +23,13 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        // Checkout, build and assemble the source and doc
-        checkout scm
+        // build and assemble the source and doc
         sh './gradlew clean assemble'
-        stash name: 'built'
       }
     }
     
     stage('QA') {
       steps {
-        unstash name: 'built'
         sh './gradlew spotbugsMain'
         sh './gradlew test'
       }
@@ -52,7 +49,6 @@ pipeline {
         script {
           if (env.BRANCH_IS_PRIMARY) {
             checkout scm // re-checkout to be able to git tag
-            unstash name: 'built'
             // read the version name and determine if it is a release build
             version = readFile('VERSION').trim()
             isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
