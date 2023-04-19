@@ -28,8 +28,8 @@ subprojects {
     // If the version says "snapshot" anywhere assume it is not a release
     ext.isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
 
-    sourceCompatibility = 11
-    targetCompatibility = 17
+    sourceCompatibility = 8
+    targetCompatibility = 8
 
     repositories {
         mavenLocal()
@@ -37,11 +37,11 @@ subprojects {
     }
 
     // Common dependencies
-    ext.compileWithSpringVersion = '6.0.6'
-    ext.compileWithBootVersion = '3.0.4'
+    ext.compileWithSpringVersion = '5.3.27'
+    ext.compileWithBootVersion = '2.7.9'
 
-    ext.testWithSpringVersion = '5.3.25'
-    ext.testWithBootVersion = '2.1.16.RELEASE'
+    ext.testWithSpringVersion = '5.3.27'
+    ext.testWithBootVersion = '2.7.9'
 
     dependencies {
         // java-cloudant client
