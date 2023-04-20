@@ -17,21 +17,21 @@
 pipeline {
   agent {
     kubernetes {
-      yaml kubePodTemplate(name: 'thin.yaml')
+      yaml kubePodTemplate(name: 'full_jnlp.yaml')
     }
   }
   stages {
     stage('Build') {
       steps {
         // build and assemble the source and doc
-        sh './gradlew clean assemble'
+        sh 'gradle clean assemble'
       }
     }
     
     stage('QA') {
       steps {
-        sh './gradlew spotbugsMain'
-        sh './gradlew test'
+        sh 'gradle spotbugsMain'
+        sh 'gradle test'
       }
       post {
         always {
@@ -54,7 +54,7 @@ pipeline {
       
             // Upload using the ossrh creds (upload destination logic is in build.gradle)
             withCredentials([usernamePassword(credentialsId: 'ossrh-creds', passwordVariable: 'OSSRH_PASSWORD', usernameVariable: 'OSSRH_USER'), usernamePassword(credentialsId: 'signing-creds', passwordVariable: 'KEY_PASSWORD', usernameVariable: 'KEY_ID'), file(credentialsId: 'signing-key', variable: 'SIGNING_FILE')]) {
-              sh './gradlew -Dsigning.keyId=$KEY_ID -Dsigning.password=$KEY_PASSWORD -Dsigning.secretKeyRingFile=$SIGNING_FILE -DossrhUsername=$OSSRH_USER -DossrhPassword=$OSSRH_PASSWORD upload'
+              sh 'gradle -Dsigning.keyId=$KEY_ID -Dsigning.password=$KEY_PASSWORD -Dsigning.secretKeyRingFile=$SIGNING_FILE -DossrhUsername=$OSSRH_USER -DossrhPassword=$OSSRH_PASSWORD upload'
             }
       
             // if it is a release build then do the git tagging
