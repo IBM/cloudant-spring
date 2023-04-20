@@ -52,20 +52,14 @@ Follow the instructions for your platform.
 
 #### Gradle
 
-The project uses the gradle wrapper to download the specified version of gradle.
-The gradle wrapper is run by using the following command:
-
-```bash
-$ ./gradlew
-```
-Note: on windows the command to run is gradlew.bat rather than gradlew
+Gradle 8.1 or higher is required.
 
 ## Building
 
 The project should build out of the box with:
 
 ```bash
-$ ./gradlew build
+$ gradle build
 ```
 
 ## Testing
@@ -75,5 +69,5 @@ $ ./gradlew build
 The tests run using [Mockito](http://site.mockito.org/) to mock the Cloudant client:
 
 ```bash
-$ ./gradlew test
+$ gradle test
 ```

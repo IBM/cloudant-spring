@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 IBM Corp. All rights reserved.
+ * Copyright © 2017, 2023 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -22,9 +22,11 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Import;
 
 /**
+ * <p>
  * Add this annotation to an {@code @Configuration} class to expose a
  * ClientBuilder and CloudantClient bean connected to the Cloudant
  * instance specified as Spring properties.
+ * </p>
  * 
  * <h1>Usage Examples</h1>
  * <code>

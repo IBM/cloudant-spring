@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 IBM Corp. All rights reserved.
+ * Copyright © 2017, 2023 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -21,7 +21,6 @@ import static org.mockito.Mockito.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.ibm.cloudant.spring.framework.EnableCloudant;
+import org.springframework.test.context.support.TestPropertySourceUtils;
 
 public class EnableCloudantTest {
 
@@ -53,7 +53,7 @@ public class EnableCloudantTest {
     public void builderBeanCreation() {
         
         this.context.register(MockCloudantClientConfig.class);
-        EnvironmentTestUtils.addEnvironment(this.context, "cloudant.url=http://cloudant.com");
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(this.context, "cloudant.url=http://cloudant.com");
         this.context.refresh();
         ClientBuilder builder = this.context.getBean(ClientBuilder.class);
         assertNotNull(builder);
@@ -64,7 +64,7 @@ public class EnableCloudantTest {
         when(mockBuilder.build()).thenReturn(mockClient);
         
         this.context.register(MockClientBuilderConfig.class);
-        EnvironmentTestUtils.addEnvironment(this.context, "cloudant.url=http://cloudant.com");
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(this.context, "cloudant.url=http://cloudant.com");
         this.context.refresh();
         CloudantClient client = this.context.getBean(CloudantClient.class);
         assertEquals(mockClient, client);

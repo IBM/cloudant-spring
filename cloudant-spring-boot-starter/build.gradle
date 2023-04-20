@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 IBM Corp. All rights reserved.
+ * Copyright © 2017, 2023 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -13,8 +13,6 @@
  */
 
 apply plugin: 'java'
-apply plugin: 'propdeps'
-apply plugin: 'propdeps-maven'
 
 buildscript {
     repositories {
@@ -26,9 +24,9 @@ buildscript {
 }
 
 dependencies {
-  compile group: 'org.springframework.boot', name: 'spring-boot', version: compileWithBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: compileWithBootVersion
-  optional group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: compileWithBootVersion
+    compileOnly group: 'org.springframework.boot', name: 'spring-boot', version: compileWithBootVersion
+    compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: compileWithBootVersion
+    compileOnly group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: compileWithBootVersion
 }
 
 configurations {  
