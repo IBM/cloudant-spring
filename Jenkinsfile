@@ -48,7 +48,6 @@ pipeline {
       steps {
         script {
           if (env.BRANCH_IS_PRIMARY) {
-            checkout scm // re-checkout to be able to git tag
             // read the version name and determine if it is a release build
             version = readFile('VERSION').trim()
             isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
