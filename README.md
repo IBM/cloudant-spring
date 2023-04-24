@@ -1,7 +1,8 @@
 # Cloudant Spring Boot Starter
 
-This is a rewrite of the "spring plugin", to provide a "starter project" which allows users to get up and running quickly,
-as well as providing autoconfiguration via application.properties or another configuration source (environment, java properties, etc)
+This project is a "Spring Boot starter" which allows users to get up and running quickly with the official
+[Cloudant SDK for Java](https://github.com/IBM/cloudant-java-sdk) in Spring boot applications as well
+as providing autoconfiguration via `application.properties` or another configuration source (environment, java properties, etc)
 
 ## Using
 
