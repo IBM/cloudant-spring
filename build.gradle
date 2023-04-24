@@ -135,7 +135,7 @@ publishing {
     signing {
         // Only apply signing when it is a release and is being published
         required {
-            isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives")
+            gradle.taskGraph.hasTask("publish")
         }
         // When signing, sign the archives
         sign configurations.archives
