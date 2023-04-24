@@ -47,7 +47,7 @@ pipeline {
     stage('Publish') {
       steps {
         script {
-          if (env.BRANCH_IS_PRIMARY) {
+          if (true) {
             // read the version name and determine if it is a release build
             version = readFile('VERSION').trim()
             isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
