@@ -72,6 +72,10 @@ compileJava.options.debugOptions.debugLevel = "source,lines,vars"
 // Fail on javac warnings
 compileJava.options.compilerArgs << "-Werror"
 
+tasks.named('test', Test) {
+    useJUnitPlatform()
+}
+
 // Always UTF-8
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
