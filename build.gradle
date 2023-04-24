@@ -34,7 +34,6 @@ apply plugin: 'signing'
 apply plugin: 'com.github.spotbugs'
 
 group = 'com.cloudant'
-name = 'cloudant-spring-boot-starter'
 version = new File(rootDir, 'VERSION').text.trim()
 
 // If the version says "snapshot" anywhere assume it is not a release
