@@ -16,7 +16,6 @@ package com.ibm.cloudant.spring.boot;
 
 import com.ibm.cloud.cloudant.internal.CloudantFactory;
 import com.ibm.cloud.cloudant.v1.Cloudant;
-import com.ibm.cloud.cloudant.v1.model.PutDatabaseOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -36,16 +35,6 @@ public class CloudantAutoConfiguration {
      */
     private String url;
 
-    /**
-     * Cloudant database name.
-     */
-    private String db;
-
-    /**
-     * If true, try to create the database at startup. Requires `db` to be non-null.
-     */
-    private boolean createDb;
-
     public String getUrl() {
         return url;
     }
@@ -54,30 +43,11 @@ public class CloudantAutoConfiguration {
         this.url = url;
     }
 
-    public String getDb() {
-        return db;
-    }
-
-    public void setDb(String db) {
-        this.db = db;
-    }
-
-    public boolean isCreateDb() {
-        return createDb;
-    }
-
-    public void setCreateDb(boolean createDb) {
-        this.createDb = createDb;
-    }
-
     @Bean
     @ConditionalOnMissingBean
     public Cloudant cloudant(@Autowired CloudantFactory serviceFactory) {
         Cloudant cloudant = serviceFactory.cloudant();
         cloudant.setServiceUrl(url);
-        if (createDb) {
-            cloudant.putDatabase(new PutDatabaseOptions.Builder().db(db).build());
-        }
         return cloudant;
     }
 

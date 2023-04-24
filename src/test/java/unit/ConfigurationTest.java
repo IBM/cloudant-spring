@@ -16,7 +16,6 @@ package unit;
 
 import com.ibm.cloud.cloudant.internal.CloudantFactory;
 import com.ibm.cloud.cloudant.v1.Cloudant;
-import com.ibm.cloud.cloudant.v1.model.PutDatabaseOptions;
 import com.ibm.cloudant.spring.boot.CloudantAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -32,8 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringJUnitConfig(DbCreationConfigurationTest.TestConfig.class)
-public class DbCreationConfigurationTest {
+@SpringJUnitConfig(ConfigurationTest.TestConfig.class)
+public class ConfigurationTest {
 
     // spring configuration providing:
     // - a mock service factory (so we can return mock cloudant service instances)
@@ -65,12 +64,10 @@ public class DbCreationConfigurationTest {
     Cloudant cloudant;
 
     @Test
-    public void testDbCreation() {
+    public void testSetUrl() {
         // given
         when(serviceFactory.cloudant()).thenReturn(cloudant);
         cloudantConfiguration.setUrl("http://localhost");
-        cloudantConfiguration.setDb("foo");
-        cloudantConfiguration.setCreateDb(true);
         // when
         Cloudant c = cloudantConfiguration.cloudant(serviceFactory);
 
@@ -78,24 +75,6 @@ public class DbCreationConfigurationTest {
         assertNotNull(c);
         assertEquals(cloudant, c);
         verify(cloudant).setServiceUrl("http://localhost");
-        verify(cloudant).putDatabase(new PutDatabaseOptions.Builder().db("foo").build());
-    }
-
-    @Test
-    public void testNoDbCreation() {
-        // given
-        when(serviceFactory.cloudant()).thenReturn(cloudant);
-        cloudantConfiguration.setUrl("http://localhost");
-        cloudantConfiguration.setCreateDb(false);
-
-        // when
-        Cloudant c = cloudantConfiguration.cloudant(serviceFactory);
-
-        // then
-        assertNotNull(c);
-        assertEquals(cloudant, c);
-        verify(cloudant).setServiceUrl("http://localhost");
-        verify(cloudant, never()).putDatabase(any());
     }
 
 }
