@@ -20,11 +20,9 @@ dependencies {
 
 application.properties:
 ```properties
-cloudant.create-db=true
-cloudant.db=my-db
 cloudant.auth.type=iam
 cloudant.url=https://<uuid>-bluemix.cloudantnosqldb.appdomain.cloud
-cloudant.apikey=my-api-key
+cloudant.apikey=my-iam-api-key
 ```
 
 Application.java:
@@ -56,12 +54,11 @@ Run application:
 
 REST request:
 ```shell
-tomblench:cloudant-java-sdk-spring-sample$ curl http://localhost:8080/all_dbs
-kafka-test-db-04178485-8f15-4c3b-9138-d6ed68edb1d4
-kafka-test-db-07b6c52a-e2e9-4da5-b641-6233367f8af9
-kafka-test-db-0810edcf-fff6-4093-af01-f081fda77e74
-kafka-test-db-08d3cef8-50db-42a5-af9f-991493cbce50
-kafka-test-db-0c8255b0-ee10-4d4c-b104-def796305ebe
+test-db-04178485-8f15-4c3b-9138-d6ed68edb1d4
+test-db-07b6c52a-e2e9-4da5-b641-6233367f8af9
+test-db-0810edcf-fff6-4093-af01-f081fda77e74
+test-db-08d3cef8-50db-42a5-af9f-991493cbce50
+test-db-0c8255b0-ee10-4d4c-b104-def796305ebe
 ...
 ```
 
@@ -76,5 +73,9 @@ when editing a properties file in some IDEs. See screenshots below for examples:
 
 ## Issues
 
-Currently the starter project only provides `spring-boot-starter` as a dependency, but for most users (as in the example
-above), the primary use case will be a web app, so should we provide `spring-boot-starter-web`?
+Before opening a new issue please consider the following:
+* Please try to reproduce the issue using the latest version.
+* Please check the [existing issues](/issues)
+to see if the problem has already been reported. Note that the default search
+includes only open issues, but it may already have been closed.
+* When opening a new issue [here in github](/issues) please complete the template fully.
