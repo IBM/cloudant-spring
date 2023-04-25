@@ -16,9 +16,8 @@ See the [sample](sample) directory which provides an example application with th
 The sample has two rest endpoints, `/all_dbs` which returns a list of all databases for the Cloudant account, and
 `/all_docs` which returns a list of all document ids for the database configured at `myconfig.db`.
 
-To run the sample, you will need to edit the `application.properties` file, substituting your own settings as necessary.
+To run the sample, you will need to edit the `application.properties` file, substituting your own settings as necessary:
 
-application.properties:
 ```properties
 cloudant.auth.type=iam
 cloudant.url=https://<uuid>-bluemix.cloudantnosqldb.appdomain.cloud
@@ -34,7 +33,7 @@ Run application:
 
 REST request for `all_dbs`:
 ```shell
-localhost:8080/all_dbs
+curl localhost:8080/all_dbs
 test-db-04178485-8f15-4c3b-9138-d6ed68edb1d4
 test-db-07b6c52a-e2e9-4da5-b641-6233367f8af9
 test-db-0810edcf-fff6-4093-af01-f081fda77e74
@@ -45,7 +44,7 @@ test-db-0c8255b0-ee10-4d4c-b104-def796305ebe
 
 REST request for `all_docs`:
 ```shell
-localhost:8080/all_docs
+curl localhost:8080/all_docs
 4826c5d0c7c9eba0babc7a17699405af
 6070d2165fd43a19bd0c51858b4597cc
 856599e6ffb52f47532e280de607146d
