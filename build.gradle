@@ -102,7 +102,6 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
             pom {
-                name = project.name
                 packaging = 'jar'
                 url = 'https://cloudant.com'
                 description = 'Spring configuration for the official Cloudant library for Java'
@@ -133,12 +132,8 @@ publishing {
     }
 
     signing {
-        // Only apply signing when it is a release and is being published
-        required {
-            isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives")
-        }
         // When signing, sign the archives
-        sign configurations.archives
+        sign publishing.publications.mavenJava
     }
 
     repositories {
