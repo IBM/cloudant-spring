@@ -31,6 +31,8 @@ Run application:
 gradle bootRun
 ```
 
+Now with the example web app running you can make REST requests to it (e.g. with `curl`).
+
 REST request for `all_dbs`:
 ```shell
 curl localhost:8080/all_dbs
