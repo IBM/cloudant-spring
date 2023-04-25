@@ -28,7 +28,7 @@ myconfig.db=my-test-db
 Run application:
 
 ```shell
-./gradlew bootRun
+gradle bootRun
 ```
 
 REST request for `all_dbs`:
