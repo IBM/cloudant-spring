@@ -86,16 +86,6 @@ javadoc {
 }
 javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 
-// Load signing and repository parameters from system properties
-['signing.keyId', 'signing.password', 'signing.secretKeyRingFile', 'ossrhUsername', 'ossrhPassword']
-        .each { propName ->
-            //set a property with the given name if the system property is set
-            //if the system property is not set then set the property to null if it isn't a signing one
-            if (System.properties.(propName.toString()) != null || !propName.startsWith("signing")) {
-                ext.(propName.toString()) = System.properties.(propName.toString())
-            }
-        }
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -131,6 +121,8 @@ publishing {
     }
 
     signing {
+        // use the GPG agent instead of the gradle implementation
+        useGpgCmd()
         // When signing, sign the archives
         sign publishing.publications.mavenJava
     }
