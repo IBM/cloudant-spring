@@ -12,7 +12,7 @@
  * and limitations under the License.
  */
 
-package com.ibm.cloudant.spring.boot;
+package com.ibm.cloud.cloudant.spring.boot;
 
 import com.ibm.cloud.cloudant.internal.CloudantFactory;
 import com.ibm.cloud.cloudant.v1.Cloudant;
