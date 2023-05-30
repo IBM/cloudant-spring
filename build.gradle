@@ -141,8 +141,8 @@ publishing {
                     "https://oss.sonatype.org/service/local/staging/deploy/maven2/" :
                     "https://oss.sonatype.org/content/repositories/snapshots"
             credentials(PasswordCredentials) {
-                username = ossrhUsername
-                password = ossrhPassword
+                username = System.env.OSSRH_USER
+                password = System.env.OSSRH_PASSWORD
             }
         }
     }
