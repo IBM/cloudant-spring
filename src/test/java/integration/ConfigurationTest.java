@@ -16,7 +16,7 @@ package integration;
 
 import com.ibm.cloud.cloudant.v1.Cloudant;
 import com.ibm.cloud.sdk.core.security.IamAuthenticator;
-import com.ibm.cloudant.spring.boot.CloudantAutoConfiguration;
+import com.ibm.cloud.cloudant.spring.boot.CloudantAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

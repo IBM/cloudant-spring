@@ -16,7 +16,7 @@ package unit;
 
 import com.ibm.cloud.cloudant.internal.CloudantFactory;
 import com.ibm.cloud.cloudant.v1.Cloudant;
-import com.ibm.cloudant.spring.boot.CloudantAutoConfiguration;
+import com.ibm.cloud.cloudant.spring.boot.CloudantAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;

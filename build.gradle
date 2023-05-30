@@ -32,7 +32,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 apply plugin: 'com.github.spotbugs'
 
-group = 'com.cloudant'
+group = 'com.ibm.cloud'
 version = new File(rootDir, 'VERSION').text.trim()
 
 // If the version says "snapshot" anywhere assume it is not a release
@@ -102,7 +102,7 @@ publishing {
             from components.java
             pom {
                 packaging = 'jar'
-                url = 'https://cloudant.com'
+                url = 'https://www.ibm.com/cloud/cloudant'
                 description = 'Spring configuration for the official Cloudant library for Java'
                 inceptionYear = '2017'
                 licenses {
@@ -113,15 +113,15 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/cloudant-labs/cloudant-spring.git'
-                    developerConnection = 'scm:git:git@github.com/cloudant-labs/cloudant-spring.git'
-                    url = 'https://github.com/cloudant-labs/cloudant-spring.git'
+                    connection = 'scm:git:git://github.com/IBM/cloudant-spring.git'
+                    developerConnection = 'scm:git:git@github.com/IBM/cloudant-spring.git'
+                    url = 'https://github.com/IBM/cloudant-spring.git'
                 }
                 developers {
                     developer {
                         name = 'IBM Cloudant'
                         email = 'cldtsdks@us.ibm.com'
-                        url = 'https://cloudant.com'
+                        url = 'https://www.ibm.com/cloud/cloudant'
                         organization = 'IBM'
                         organizationUrl = 'http://www.ibm.com'
                     }

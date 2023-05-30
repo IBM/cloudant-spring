@@ -12,7 +12,7 @@
  * and limitations under the License.
  */
 
-package com.ibm.cloud.cloudantjavasdkspringsample;
+package com.ibm.cloud.cloudant.spring.sample;
 
 import java.util.stream.Collectors;
 
