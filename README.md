@@ -4,6 +4,9 @@ This project is a "Spring Boot starter" which allows users to get up and running
 [Cloudant SDK for Java](https://github.com/IBM/cloudant-java-sdk) in Spring boot applications as well
 as providing autoconfiguration via `application.properties` or another configuration source (environment, java properties, etc)
 
+_Note this library is experimental and not covered by IBM Cloudant support._
+_If you have problems using the library please refer to [issues](#issues)._
+
 ## Using
 
 See the [sample](sample) directory which provides an example application with the following features:
