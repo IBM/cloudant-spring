@@ -48,7 +48,7 @@ public class CloudantFactory {
     private Map<String, String> getSpringProperties(Environment env) {
         return StreamSupport.stream(((AbstractEnvironment)env).getPropertySources().spliterator(), false)
                 .filter(ps -> ps instanceof EnumerablePropertySource)
-                .map(ps -> ((EnumerablePropertySource) ps).getPropertyNames())
+                .map(ps -> ((EnumerablePropertySource<?>) ps).getPropertyNames())
                 .flatMap(Arrays::stream)
                 .distinct()
                 .filter(ps -> ps.toLowerCase(Locale.ROOT).startsWith("cloudant."))
