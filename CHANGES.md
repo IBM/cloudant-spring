@@ -1,5 +1,13 @@
-# Unreleased
-- [UPGRADED] java-cloudant dependency to version 2.19.1.
+# 0.1.0 (2023-06-02)
+- [NEW] Added IAM authentication support (and config support for all authentication options supported by `cloudant-java-sdk`).
+- [NEW] Created a sample project.
+- [BREAKING CHANGE] Migrated cloudant client from [`java-cloudant` (`com.cloudant:cloudant-client`)](https://github.com/cloudant/java-cloudant) to [`cloudant-java-sdk` (`com.ibm.cloud:cloudant`)](https://github.com/IBM/cloudant-java-sdk/).
+- [BREAKING CHANGE] Made only a `cloudant-spring-boot-starter` artifact and stopped making `cloudant-spring-framework` artifact.
+- [BREAKING CHANGE] Changed Maven coordinates from `com.cloudant:cloudant-spring-boot-starter` to `com.ibm.cloud:cloudant-spring-boot-starter`.
+- [BREAKING CHANGE] Removed `cloudant.db` and `cloudant.createDb` configuration options. Database names can be passed in user defined configuration.
+- [UPGRADED] Spring Boot compilation version to 2.7.9.
+- [NOTE] For application migration from `java-cloudant` to `cloudant-java-sdk` see the [migration guide](https://github.com/cloudant/java-cloudant/blob/6ea7fa2ff2a6245a05cc71d8856b3f89c2983d59/MIGRATION.md).
+- [NOTE] Moved repository from [`cloudant-labs` org](https://github.com/cloudant-labs/cloudant-spring) to [`IBM` org](https://github.com/IBM/cloudant-spring).
 
 # 0.0.4 (2018-11-08)
 - [NEW] Configuration option `cloudant.createDb` for creating the database. Can be disabled to allow
