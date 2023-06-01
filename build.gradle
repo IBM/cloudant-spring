@@ -48,8 +48,8 @@ repositories {
 
 
 dependencies {
-    // java-cloudant client
-    api group: 'com.ibm.cloud', name: 'cloudant', version: '0.5.0'
+    // cloudant-java-sdk client
+    api group: 'com.ibm.cloud', name: 'cloudant', version: '0.5.2'
     // spring
     api group: 'org.springframework.boot', name: 'spring-boot', version: compileWithBootVersion
     api group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: compileWithBootVersion
