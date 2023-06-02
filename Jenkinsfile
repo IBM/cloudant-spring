@@ -68,29 +68,9 @@ pipeline {
       
             // if it is a release build then do the git tagging
             if (isReleaseVersion) {
-      
-              // Read the CHANGES.md to get the tag message
-              changes = """"""
-              changes += readFile('CHANGES.md')
-              tagMessage = """"""
-              for (line in changes.readLines()) {
-                if (!"".equals(line)) {
-                  // append the line to the tagMessage
-                  tagMessage = "${tagMessage}${line}\n"
-                } else {
-                  break
-                }
-              }
-      
-              // Use git to tag the release at the version
-              // Awkward workaround until resolution of https://issues.jenkins-ci.org/browse/JENKINS-28335
-              withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'github-token', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
-                sh "git config user.email \"nomail@hursley.ibm.com\""
-                sh "git config user.name \"Jenkins CI\""
-                sh "git config credential.username ${env.GIT_USERNAME}"
-                sh "git config credential.helper '!echo password=\$GIT_PASSWORD; echo'"
-                sh "git tag -a ${version} -m '${tagMessage}'"
-                sh "git push origin ${version}"
+              gitTagAndPublish {
+                isDraft=true
+                releaseApiUrl='https://api.github.com/repos/IBM/cloudant-spring/releases'
               }
             }
           }
