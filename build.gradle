@@ -91,6 +91,7 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
             pom {
+                name = rootProject.name
                 packaging = 'jar'
                 url = 'https://www.ibm.com/cloud/cloudant'
                 description = 'Spring configuration for the official Cloudant library for Java'
