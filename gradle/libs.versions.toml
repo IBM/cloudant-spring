@@ -1,0 +1,19 @@
+[versions]
+springBootVersion = "2.7.12"
+
+[libraries]
+cloudant = { module = "com.ibm.cloud:cloudant", version = "0.5.2" }
+spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "springBootVersion" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "springBootVersion" }
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "springBootVersion" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBootVersion" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.9.2" }
+mockito-core = { module = "org.mockito:mockito-core", version = "5.2.0" }
+
+[bundles]
+springApi = ["spring-boot", "spring-boot-autoconfigure", "spring-boot-configuration-processor"]
+test = ["spring-boot-starter-test", "junit-jupiter", "mockito-core"]
+
+[plugins]
+springboot = { id = "org.springframework.boot", version.ref = "springBootVersion" }
+spotbugs = { id = "com.github.spotbugs", version = "5.0.13" }
