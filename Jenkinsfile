@@ -20,6 +20,10 @@ pipeline {
       yaml kubePodTemplate(name: 'full_jnlp.yaml')
     }
   }
+  environment {
+    ARTIFACTORY_CREDS = credentials('artifactory')
+    ARTIFACTORY_URL = "${Artifactory.server('taas-artifactory').getUrl()}"
+  }
   stages {
     stage('Build') {
       steps {

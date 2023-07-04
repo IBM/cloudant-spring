@@ -12,13 +12,6 @@
  * and limitations under the License.
  */
 
-buildscript {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-    }
-}
-
 plugins {
     id 'java-library'
     id 'maven-publish'
@@ -37,8 +30,18 @@ sourceCompatibility = 8
 targetCompatibility = 8
 
 repositories {
-    mavenLocal()
-    mavenCentral()
+    if (System.env.ARTIFACTORY_URL != null) {
+        maven {
+            url "${System.env.ARTIFACTORY_URL}/cloudant-sdks-maven-virtual"
+            credentials {
+                username System.env.ARTIFACTORY_CREDS_USR
+                password System.env.ARTIFACTORY_CREDS_PSW
+            }
+        }
+    } else {
+        mavenLocal()
+        mavenCentral()
+    }
 }
 
 
