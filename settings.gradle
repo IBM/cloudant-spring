@@ -1,1 +1,17 @@
+pluginManagement {
+    repositories {
+        if (System.env.ARTIFACTORY_URL != null) {
+            maven {
+                url "${System.env.ARTIFACTORY_URL}/cloudant-sdks-maven-virtual"
+                credentials {
+                    username System.env.ARTIFACTORY_CREDS_USR
+                    password System.env.ARTIFACTORY_CREDS_PSW
+                }
+            }
+        } else {
+            gradlePluginPortal()
+        }
+    }
+}
+
 rootProject.name = 'cloudant-spring-boot-starter'
