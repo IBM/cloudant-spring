@@ -14,23 +14,18 @@
 
 buildscript {
     repositories {
-        maven { url 'https://repo.spring.io/plugins-release' }
         gradlePluginPortal()
         mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${compileWithBootVersion}")
     }
 }
 
 plugins {
-    id "com.github.spotbugs" version "5.0.13"
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    alias(libs.plugins.springboot)
+    alias(libs.plugins.spotbugs)
 }
-
-apply plugin: 'java-library'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
-apply plugin: 'com.github.spotbugs'
 
 group = 'com.ibm.cloud'
 version = new File(rootDir, 'VERSION').text.trim()
@@ -49,16 +44,11 @@ repositories {
 
 dependencies {
     // cloudant-java-sdk client
-    api group: 'com.ibm.cloud', name: 'cloudant', version: '0.5.2'
+    api(libs.cloudant)
     // spring
-    api group: 'org.springframework.boot', name: 'spring-boot', version: compileWithBootVersion
-    api group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: compileWithBootVersion
-    api group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: compileWithBootVersion
+    api(libs.bundles.springApi)
     // testing
-    // TODO these should be in the pom with scope test
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.9.2'
-    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: compileWithBootVersion
-    testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.2.0'
+    testImplementation(libs.bundles.test)
 }
 
 java {
@@ -70,6 +60,15 @@ java {
 compileJava.options.debugOptions.debugLevel = "source,lines,vars"
 // Fail on javac warnings
 compileJava.options.compilerArgs << "-Werror"
+
+// As a library we don't want to publish an executable jar
+// and we'd like the plain jar to have no classifier.
+tasks.named("bootJar") {
+	enabled = false
+}
+tasks.named("jar") {
+	archiveClassifier = ''
+}
 
 tasks.named('test', Test) {
     useJUnitPlatform()
