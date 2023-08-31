@@ -2,7 +2,7 @@
 springBootVersion = "2.7.15"
 
 [libraries]
-cloudant = { module = "com.ibm.cloud:cloudant", version = "0.5.4" }
+cloudant = { module = "com.ibm.cloud:cloudant", version = "0.6.0" }
 spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "springBootVersion" }
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "springBootVersion" }
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "springBootVersion" }
