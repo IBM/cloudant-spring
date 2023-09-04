@@ -1,3 +1,7 @@
+# 0.1.1 (2023-09-04)
+- [UPGRADED] Spring Boot compilation version to `2.7.15`.
+- [UPGRADED] `com.ibm.cloud:cloudant` to `0.6.0`.
+
 # 0.1.0 (2023-06-02)
 - [NEW] Added IAM authentication support (and config support for all authentication options supported by `cloudant-java-sdk`).
 - [NEW] Created a sample project.
