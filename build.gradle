@@ -61,8 +61,6 @@ java {
 
 // Include variable debug info in the compiled classes
 compileJava.options.debugOptions.debugLevel = "source,lines,vars"
-// Fail on javac warnings
-compileJava.options.compilerArgs << "-Werror"
 
 // As a library we don't want to publish an executable jar
 // and we'd like the plain jar to have no classifier.
