@@ -142,8 +142,8 @@ publishing {
 }
 
 spotbugs {
-    reportLevel = "low"
-    effort = "max"
+    reportLevel = com.github.spotbugs.snom.Confidence.valueOf('LOW')
+    effort = com.github.spotbugs.snom.Effort.valueOf('MAX')
     includeFilter = file("findbugs-exclude.xml")
 }
 
