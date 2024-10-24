@@ -7,7 +7,7 @@ spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "springBootVersion" }
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "springBootVersion" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBootVersion" }
-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.11.2" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.11.3" }
 mockito-core = { module = "org.mockito:mockito-core", version = "5.14.2" }
 
 [bundles]
