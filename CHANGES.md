@@ -1,3 +1,6 @@
+# 0.2.1 (2025-01-21)
+- [UPGRADED] `com.ibm.cloud:cloudant` to `0.10.0`.
+
 # 0.2.0 (2024-11-08)
 - [UPGRADED] Spring Boot compilation version to `3.3.5`.
 - [UPGRADED] `com.ibm.cloud:cloudant` to `0.9.3`.
