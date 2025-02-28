@@ -52,6 +52,7 @@ dependencies {
     api(libs.bundles.springApi)
     // testing
     testImplementation(libs.bundles.test)
+    testRuntimeOnly(libs.junitPlatformLauncher)
 }
 
 java {
