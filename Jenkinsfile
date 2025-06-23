@@ -69,9 +69,19 @@ pipeline {
                 gradle -Psigning.gnupg.keyName=$SIGNING_KEYID -Psigning.gnupg.executable=/opt/Garantir/bin/gpg -Psigning.gnupg.homeDir=$HOME/.gnupggrs publish
               '''
             }
-      
-            // if it is a release build then do the git tagging
+            // if it is a release build then do extra work
             if (isReleaseVersion) {
+              // Upload from OSSRH staging API to central portal and publish
+              httpRequest(
+                authentication: 'central-portal',
+                httpMode: 'POST',
+                responseHandle: 'NONE',
+                url: 'https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/com.ibm.cloud?publishing_type=automatic',
+                validResponseCodes: '200',
+                wrapAsMultipart: false
+              )
+
+              // Create a git tag and a draft release
               gitTagAndPublish {
                 isDraft=true
                 releaseApiUrl='https://api.github.com/repos/IBM/cloudant-spring/releases'
