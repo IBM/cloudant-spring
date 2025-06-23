@@ -56,7 +56,7 @@ pipeline {
             version = readFile('VERSION').trim()
             isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
 
-            withCredentials([usernamePassword(credentialsId: 'ossrh', passwordVariable: 'OSSRH_PASSWORD', usernameVariable: 'OSSRH_USER'), 
+            withCredentials([usernamePassword(credentialsId: 'central-portal', passwordVariable: 'CP_PASSWORD', usernameVariable: 'CP_USER'), 
                             certificate(credentialsId: 'cldtsdks-signing-cert', keystoreVariable: 'CODE_SIGNING_PFX_FILE', passwordVariable: 'CODE_SIGNING_P12_PASSWORD')]) {
               sh '''
                 #!/bin/bash -e
