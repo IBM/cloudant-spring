@@ -132,11 +132,11 @@ publishing {
     repositories {
         maven {
             url = isReleaseVersion ?
-                    "https://oss.sonatype.org/service/local/staging/deploy/maven2/" :
-                    "https://oss.sonatype.org/content/repositories/snapshots"
+                    'https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/' :
+                    'https://central.sonatype.com/repository/maven-snapshots/'
             credentials(PasswordCredentials) {
-                username = System.env.OSSRH_USER
-                password = System.env.OSSRH_PASSWORD
+                username = System.env.CP_USER
+                password = System.env.CP_PASSWORD
             }
         }
     }
