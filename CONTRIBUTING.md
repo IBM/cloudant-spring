@@ -26,6 +26,10 @@ Please read the agreement and acknowledge it by ticking the appropriate box in t
 
 - [x] Tick to sign-off your agreement to the Developer Certificate of Origin (DCO) 1.1
 
+### AI-generated code policy
+
+Before submitting your pull request, please ensure you've reviewed and adhere to our [AI policy](AI_CODE_POLICY.md).
+
 ## General information
 
 Cloudant-spring is written in Java and uses Gradle as its build tool.
