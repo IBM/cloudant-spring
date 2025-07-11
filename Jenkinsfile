@@ -25,13 +25,19 @@ pipeline {
     ARTIFACTORY_URL = "${Artifactory.server('taas-artifactory').getUrl()}"
   }
   stages {
+    stage('Detect Secrets') {
+      steps {
+        detectSecrets()
+      }
+    }
+
     stage('Build') {
       steps {
         // build and assemble the source and doc
         sh 'gradle clean assemble'
       }
     }
-    
+
     stage('QA') {
       steps {
         sh 'gradle spotbugsMain'
