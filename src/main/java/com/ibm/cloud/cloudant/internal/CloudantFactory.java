@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023 IBM Corp. All rights reserved.
+ * Copyright © 2023, 2025 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -47,7 +47,7 @@ public class CloudantFactory {
     // NB the usual spring precedence order is respected since we use `env.getProperty()` at the end of the pipeline
     private Map<String, String> getSpringProperties(Environment env) {
         return StreamSupport.stream(((AbstractEnvironment)env).getPropertySources().spliterator(), false)
-                .filter(ps -> ps instanceof EnumerablePropertySource)
+                .filter(EnumerablePropertySource.class::isInstance)
                 .map(ps -> ((EnumerablePropertySource<?>) ps).getPropertyNames())
                 .flatMap(Arrays::stream)
                 .distinct()
