@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023 IBM Corp. All rights reserved.
+ * Copyright © 2023, 2025 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -30,7 +30,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootApplication // needed for autoconfiguration
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(properties = { "cloudant.url = http://localhost", "cloudant.auth.type = iam", "cloudant.apikey = zzz"})
-public class ConfigurationTest {
+class ConfigurationTest {
 
     @Autowired
     Cloudant cloudant;
@@ -39,7 +39,7 @@ public class ConfigurationTest {
     CloudantAutoConfiguration configuration;
 
     @Test
-    public void testWiring() {
+    void testWiring() {
         Assertions.assertNotNull(cloudant);
         Assertions.assertEquals( "http://localhost", cloudant.getServiceUrl());
         Assertions.assertTrue(cloudant.getAuthenticator() instanceof IamAuthenticator);

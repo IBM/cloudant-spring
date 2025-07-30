@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023 IBM Corp. All rights reserved.
+ * Copyright © 2023, 2025 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @SpringJUnitConfig(ConfigurationTest.TestConfig.class)
-public class ConfigurationTest {
+class ConfigurationTest {
 
     // spring configuration providing:
     // - a mock service factory (so we can return mock cloudant service instances)
@@ -63,7 +63,7 @@ public class ConfigurationTest {
     Cloudant cloudant;
 
     @Test
-    public void testSetUrl() {
+    void testSetUrl() {
         // given
         when(serviceFactory.cloudant()).thenReturn(cloudant);
         cloudantConfiguration.setUrl("http://localhost");
