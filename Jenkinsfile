@@ -1,7 +1,7 @@
 #!groovy
 
 /*
- * Copyright © 2017, 2023 IBM Corp. All rights reserved.
+ * Copyright © 2017, 2025 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -52,7 +52,27 @@ pipeline {
         }
       }
     }
-    
+
+    stage('SonarQube analysis') {
+      when {
+        anyOf {
+          changeRequest()
+          expression { env.BRANCH_IS_PRIMARY }
+        }
+        not {
+          changeRequest branch: 'dependabot*', comparator: 'GLOB'
+        }
+      }
+      environment {
+        scannerHome = tool 'SonarQubeScanner'
+      }
+      steps {
+        withSonarQubeEnv(installationName: 'SonarQubeServer') {
+          sh 'gradle sonar -Dsonar.qualitygate.wait=true -Dsonar.projectKey=cloudant-spring'
+        }
+      }
+    }
+
     // Publish the primary branch
     stage('Publish') {
       steps {
