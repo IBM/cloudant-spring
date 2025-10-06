@@ -27,16 +27,20 @@ version = new File(rootDir, 'VERSION').text.trim()
 // If the version says "snapshot" anywhere assume it is not a release
 ext.isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
 
-sourceCompatibility = 17
-targetCompatibility = 17
+tasks.withType(JavaCompile).configureEach {
+    // Build with Java 17 compatibility
+    options.release = 17
+    // Always UTF-8
+    options.encoding = 'UTF-8'
+}
 
 repositories {
     if (System.env.ARTIFACTORY_URL != null) {
         maven {
-            url "${System.env.ARTIFACTORY_URL}/cloudant-sdks-maven-virtual"
+            url = "${System.env.ARTIFACTORY_URL}/cloudant-sdks-maven-virtual"
             credentials {
-                username System.env.ARTIFACTORY_CREDS_USR
-                password System.env.ARTIFACTORY_CREDS_PSW
+                username = System.env.ARTIFACTORY_CREDS_USR
+                password = System.env.ARTIFACTORY_CREDS_PSW
             }
         }
     } else {
@@ -75,11 +79,6 @@ tasks.named("jar") {
 
 tasks.named('test', Test) {
     useJUnitPlatform()
-}
-
-// Always UTF-8
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
 }
 
 javadoc {
@@ -156,4 +155,3 @@ spotbugsMain {
         }
     }
 }
-
