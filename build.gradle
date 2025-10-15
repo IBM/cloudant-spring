@@ -22,7 +22,7 @@ plugins {
 }
 
 group = 'com.ibm.cloud'
-version = new File(rootDir, 'VERSION').text.trim()
+version = file('VERSION').text.trim()
 
 // If the version says "snapshot" anywhere assume it is not a release
 ext.isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
@@ -75,6 +75,16 @@ tasks.named("bootJar") {
 }
 tasks.named("jar") {
 	archiveClassifier = ''
+}
+
+jar {
+    manifest {
+        attributes(['Implementation-Title': rootProject.name,
+            'Implementation-Version': version,
+            'Implementation-Vendor': 'IBM'],
+            'com/ibm/cloud/cloudant/spring/boot/'
+        )
+    }
 }
 
 tasks.named('test', Test) {
