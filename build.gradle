@@ -85,6 +85,9 @@ jar {
             'com/ibm/cloud/cloudant/spring/boot/'
         )
     }
+    into "META-INF", {
+        from 'LICENSE'
+    }
 }
 
 tasks.named('test', Test) {
