@@ -17,5 +17,5 @@ test = ["spring-boot-starter-test", "junit-jupiter", "mockito-core"]
 
 [plugins]
 springboot = { id = "org.springframework.boot", version.ref = "springBootVersion" }
-spotbugs = { id = "com.github.spotbugs", version = "6.4.4" }
+spotbugs = { id = "com.github.spotbugs", version = "6.4.5" }
 sq = { id = "org.sonarqube", version = "7.0.1.6134" }
