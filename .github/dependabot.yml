@@ -1,10 +1,12 @@
 version: 2
 updates:
   - package-ecosystem: "gradle"
+    cooldown: 
+      default-days: 4
     directory: "/"
     open-pull-requests-limit: 10
     schedule:
       interval: "weekly"
-      day: "thursday"
+      day: "monday"
     pull-request-branch-name:
       separator: "-"
