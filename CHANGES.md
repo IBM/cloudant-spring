@@ -1,3 +1,7 @@
+# 0.2.6 (2026-03-24)
+- [UPGRADED] Spring Boot compilation version to `3.5.12`.
+- [UPGRADED] `com.ibm.cloud:cloudant` to `0.10.16`.
+
 # 0.2.5 (2025-12-03)
 - [NEW] Added User-Agent to requests.
 - [UPGRADED] Spring Boot compilation version to `3.5.8`.
