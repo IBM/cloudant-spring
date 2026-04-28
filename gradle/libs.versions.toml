@@ -1,5 +1,5 @@
 [versions]
-springBootVersion = "3.5.13"
+springBootVersion = "3.5.14"
 
 [libraries]
 cloudant = { module = "com.ibm.cloud:cloudant", version = "0.10.17" }
