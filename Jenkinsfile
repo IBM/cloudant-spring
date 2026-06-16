@@ -73,13 +73,37 @@ pipeline {
       }
     }
 
+    stage('Publish[staging]') {
+      when {
+          not {
+              buildingTag()
+          }
+      }
+      steps {
+        script {
+          bumpVersion(true)
+        }
+      }
+      post {
+        always {
+          sh 'git reset --hard'
+        }
+      }
+    }
+
     // Publish the primary branch
     stage('Publish') {
+      when {
+        allOf {
+          buildingTag()
+          tag pattern: /^v\d+\.\d+\.\d+$/, comparator: 'REGEXP'
+        }
+      }
       steps {
         script {
           if (env.BRANCH_IS_PRIMARY) {
             // read the version name and determine if it is a release build
-            version = readFile('VERSION').trim()
+            version = sh(returnStdout: true, script: 'bump-my-version show current_version').trim()
             isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
 
             withCredentials([usernamePassword(credentialsId: 'central-portal', passwordVariable: 'CP_PASSWORD', usernameVariable: 'CP_USER'), 
@@ -123,5 +147,21 @@ pipeline {
         }
       }
     }
-  }  
+  }
+}  
+
+def bumpVersion = { isDevRelease ->
+  newVersion = getNewVersion(isDevRelease)
+  doVersionBump(isDevRelease, newVersion, true)
+}
+
+def doVersionBump = { isDevRelease, newVersion, allowDirty ->
+  sh "bump-my-version bump patch --new-version ${newVersion} ${allowDirty ? '--allow-dirty': ''} ${isDevRelease ? '--no-commit' : '--tag --tag-message \"Release {new_version}\"'}"
+}
+
+def getNewVersion = { isDevRelease ->
+  version = sh(returnStdout: true, script: 'bump-my-version show current_version').trim()
+  if (isDevRelease) return version + '-SNAPSHOT'
+  targetVersion = sh(returnStdout: true, script: 'bump-my-version show-bump --ascii | grep patch | rev | cut -f1 -d " " | rev').trim()
+  return targetVersion
 }

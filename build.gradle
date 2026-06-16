@@ -22,7 +22,7 @@ plugins {
 }
 
 group = 'com.ibm.cloud'
-version = file('VERSION').text.trim()
+version = '0.2.6'
 
 // If the version says "snapshot" anywhere assume it is not a release
 ext.isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
