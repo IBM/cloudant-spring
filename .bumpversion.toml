@@ -12,8 +12,8 @@ serialize = [
 
 [[tool.bumpversion.files]]
 filename = "build.gradle"
-search = "{current_version}"
-replace = "{new_version}"
+search = "version = '{current_version}'"
+replace = "version = '{new_version}'"
 
 [[tool.bumpversion.files]]
 filename = "sample/build.gradle"

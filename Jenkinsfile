@@ -1,7 +1,7 @@
 #!groovy
 
 /*
- * Copyright © 2017, 2025 IBM Corp. All rights reserved.
+ * Copyright © 2017, 2026 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,22 @@
  * either express or implied. See the License for the specific language governing permissions
  * and limitations under the License.
  */
+
+def getNewVersion = { isDevRelease ->
+  version = sh(returnStdout: true, script: 'bump-my-version show current_version').trim()
+  if (isDevRelease) return version + '-SNAPSHOT'
+  targetVersion = sh(returnStdout: true, script: 'bump-my-version show-bump --ascii | grep patch | rev | cut -f1 -d " " | rev').trim()
+  return targetVersion
+}
+
+def doVersionBump = { isDevRelease, newVersion ->
+  sh "bump-my-version bump patch --new-version ${newVersion} ${isDevRelease ? '--no-commit' : '--tag --tag-message \"Release {new_version}\"'}"
+}
+
+def bumpVersion = { isDevRelease ->
+  newVersion = getNewVersion(isDevRelease)
+  doVersionBump(isDevRelease, newVersion)
+}
 
 pipeline {
   agent {
@@ -93,12 +109,6 @@ pipeline {
 
     // Publish the primary branch
     stage('Publish') {
-      when {
-        allOf {
-          buildingTag()
-          tag pattern: /^v\d+\.\d+\.\d+$/, comparator: 'REGEXP'
-        }
-      }
       steps {
         script {
           if (env.BRANCH_IS_PRIMARY) {
@@ -148,20 +158,4 @@ pipeline {
       }
     }
   }
-}  
-
-def bumpVersion = { isDevRelease ->
-  newVersion = getNewVersion(isDevRelease)
-  doVersionBump(isDevRelease, newVersion, true)
-}
-
-def doVersionBump = { isDevRelease, newVersion, allowDirty ->
-  sh "bump-my-version bump patch --new-version ${newVersion} ${allowDirty ? '--allow-dirty': ''} ${isDevRelease ? '--no-commit' : '--tag --tag-message \"Release {new_version}\"'}"
-}
-
-def getNewVersion = { isDevRelease ->
-  version = sh(returnStdout: true, script: 'bump-my-version show current_version').trim()
-  if (isDevRelease) return version + '-SNAPSHOT'
-  targetVersion = sh(returnStdout: true, script: 'bump-my-version show-bump --ascii | grep patch | rev | cut -f1 -d " " | rev').trim()
-  return targetVersion
 }
