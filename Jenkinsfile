@@ -15,9 +15,8 @@
  */
 
 def getNewVersion = { isDevRelease ->
-  version = sh(returnStdout: true, script: 'bump-my-version show current_version').trim()
-  if (isDevRelease) return version + '-SNAPSHOT'
   targetVersion = sh(returnStdout: true, script: 'bump-my-version show-bump --ascii | grep patch | rev | cut -f1 -d " " | rev').trim()
+  if (isDevRelease) return targetVersion + '-SNAPSHOT'
   return targetVersion
 }
 
