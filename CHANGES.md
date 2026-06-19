@@ -1,3 +1,9 @@
+# Release Notes
+
+For releases from version 0.2.7 onwards, please see the [GitHub Releases page](https://github.com/IBM/cloudant-spring/releases).
+
+---
+
 # 0.2.6 (2026-03-24)
 - [UPGRADED] Spring Boot compilation version to `3.5.12`.
 - [UPGRADED] `com.ibm.cloud:cloudant` to `0.10.16`.
