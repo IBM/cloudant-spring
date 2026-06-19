@@ -147,9 +147,11 @@ pipeline {
         }
       }
       steps {
-        gitsh('github.com') {
-          bumpVersion(params.TARGET_VERSION)
-          sh 'git push --tags origin HEAD:main'
+        script {
+          gitsh('github.com') {
+            bumpVersion(params.TARGET_VERSION)
+            sh 'git push --tags origin HEAD:main'
+          }
         }
       }
     }
