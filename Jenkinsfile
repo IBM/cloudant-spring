@@ -1,7 +1,7 @@
 #!groovy
 
 /*
- * Copyright © 2017, 2025 IBM Corp. All rights reserved.
+ * Copyright © 2017, 2026 IBM Corp. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,21 @@
  * either express or implied. See the License for the specific language governing permissions
  * and limitations under the License.
  */
+
+def getNewVersion = { isDevRelease ->
+  targetVersion = sh(returnStdout: true, script: 'bump-my-version show-bump --ascii | grep patch | rev | cut -f1 -d " " | rev').trim()
+  if (isDevRelease) return targetVersion + '-SNAPSHOT'
+  return targetVersion
+}
+
+def doVersionBump = { isDevRelease, newVersion ->
+  sh "bump-my-version bump patch --new-version ${newVersion} ${isDevRelease ? '--no-commit' : '--tag --tag-message \"Release {new_version}\"'}"
+}
+
+def bumpVersion = { isDevRelease ->
+  newVersion = getNewVersion(isDevRelease)
+  doVersionBump(isDevRelease, newVersion)
+}
 
 pipeline {
   agent {
@@ -73,13 +88,31 @@ pipeline {
       }
     }
 
+    stage('Publish[staging]') {
+      when {
+          not {
+              buildingTag()
+          }
+      }
+      steps {
+        script {
+          bumpVersion(true)
+        }
+      }
+      post {
+        always {
+          sh 'git reset --hard'
+        }
+      }
+    }
+
     // Publish the primary branch
     stage('Publish') {
       steps {
         script {
           if (env.BRANCH_IS_PRIMARY) {
             // read the version name and determine if it is a release build
-            version = readFile('VERSION').trim()
+            version = sh(returnStdout: true, script: 'bump-my-version show current_version').trim()
             isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
 
             withCredentials([usernamePassword(credentialsId: 'central-portal', passwordVariable: 'CP_PASSWORD', usernameVariable: 'CP_USER'), 
@@ -123,5 +156,5 @@ pipeline {
         }
       }
     }
-  }  
+  }
 }
