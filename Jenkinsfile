@@ -140,6 +140,9 @@ pipeline {
           not {
             equals expected: 'NONE', actual: "${params.TARGET_VERSION}"
           }
+          not {
+            buildingTag()
+          }
         }
       }
       steps {
