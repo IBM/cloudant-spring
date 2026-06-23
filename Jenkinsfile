@@ -44,10 +44,6 @@ def gradlePublish = {
   }
 }
 
-def prefixlessTag(tag) {
-    return tag.replaceFirst('v','')
-}
-
 pipeline {
   agent {
     kubernetes {
@@ -147,11 +143,11 @@ pipeline {
         }
       }
       steps {
-        script {
-          gitsh('github.com') {
+        gitsh('github.com') {
+          script {
             bumpVersion(params.TARGET_VERSION)
-            sh 'git push --tags origin HEAD:main'
           }
+          sh 'git push --tags origin HEAD:main'
         }
       }
     }
@@ -161,43 +157,43 @@ pipeline {
       when {
         allOf {
           buildingTag()
-          tag pattern: /${env.SVRE_PRE_RELEASE_TAG}/, comparator: 'REGEXP'
+          tag pattern: /v${env.SVRE_RELEASE}/, comparator: "REGEXP"
         }
       }
       steps {
         script {
           gradlePublish()
-          // Upload from OSSRH staging API to central portal and publish
-          httpRequest(
-            authentication: 'central-portal',
-            httpMode: 'POST',
-            responseHandle: 'NONE',
-            url: 'https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/com.ibm.cloud?publishing_type=automatic',
-            validResponseCodes: '200',
-            wrapAsMultipart: false
-          )
-
-          httpRequest(
-            authentication: 'gh-sdks-automation',
-            contentType: 'APPLICATION_JSON_UTF8',
-            customHeaders: [[name: 'Accept', value: 'application/vnd.github+json']],
-            httpMode: 'POST',
-            outputFile: 'release_response.json',
-            requestBody: """
-              {
-                "tag_name": "${TAG_NAME}",
-                "name": "${prefixlessTag(TAG_NAME)} (${new Date(TAG_TIMESTAMP as long).format('yyyy-MM-dd')})",
-                "draft": false,
-                "prerelease": false,
-                "generate_release_notes": true
-              }
-              """.stripIndent(),
-            timeout: 60,
-            url: 'https://api.github.com/repos/IBM/cloudant-spring/releases',
-            validResponseCodes: '201',
-            wrapAsMultipart: false
-          )
         }
+        // Upload from OSSRH staging API to central portal and publish
+        httpRequest(
+          authentication: 'central-portal',
+          httpMode: 'POST',
+          responseHandle: 'NONE',
+          url: 'https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/com.ibm.cloud?publishing_type=automatic',
+          validResponseCodes: '200',
+          wrapAsMultipart: false
+        )
+
+        httpRequest(
+          authentication: 'gh-sdks-automation',
+          contentType: 'APPLICATION_JSON_UTF8',
+          customHeaders: [[name: 'Accept', value: 'application/vnd.github+json']],
+          httpMode: 'POST',
+          outputFile: 'release_response.json',
+          requestBody: """
+            {
+              "tag_name": "${TAG_NAME}",
+              "name": "${TAG_NAME.replaceFirst('v','')} (${new Date(TAG_TIMESTAMP as long).format('yyyy-MM-dd')})",
+              "draft": false,
+              "prerelease": false,
+              "generate_release_notes": true
+            }
+            """.stripIndent(),
+          timeout: 60,
+          url: 'https://api.github.com/repos/IBM/cloudant-spring/releases',
+          validResponseCodes: '201',
+          wrapAsMultipart: false
+        )
       }
       post {
         always {
