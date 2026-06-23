@@ -14,19 +14,34 @@
  * and limitations under the License.
  */
 
-def getNewVersion = { isDevRelease ->
+def getDevVersion = {
   targetVersion = sh(returnStdout: true, script: 'bump-my-version show-bump --ascii | grep patch | rev | cut -f1 -d " " | rev').trim()
-  if (isDevRelease) return targetVersion + '-SNAPSHOT'
-  return targetVersion
+  return targetVersion + '-SNAPSHOT'
 }
 
 def doVersionBump = { isDevRelease, newVersion ->
   sh "bump-my-version bump patch --new-version ${newVersion} ${isDevRelease ? '--no-commit' : '--tag --tag-message \"Release {new_version}\"'}"
 }
 
-def bumpVersion = { isDevRelease ->
-  newVersion = getNewVersion(isDevRelease)
-  doVersionBump(isDevRelease, newVersion)
+def bumpVersion = { version ->
+  isDevRelease = version.contains('-SNAPSHOT')
+  doVersionBump(isDevRelease, version)
+}
+
+def gradlePublish = {
+  withCredentials([usernamePassword(credentialsId: 'central-portal', passwordVariable: 'CP_PASSWORD', usernameVariable: 'CP_USER'), 
+                  certificate(credentialsId: 'cldtsdks-signing-cert', keystoreVariable: 'CODE_SIGNING_PFX_FILE', passwordVariable: 'CODE_SIGNING_P12_PASSWORD')]) {
+    sh '''
+      #!/bin/bash -e
+      # Configure the signing client
+      setup-garasign-client
+      # Get the key ID
+      SIGNING_KEYID=$(grep 'Key ID' $HOME/.gnupggrs/keysinfo.txt | awk 'NR==1{print $5}')
+      # Do a gradle publish that signs and uploads using the OSSRH creds
+      # upload destination logic is in build.gradle
+      gradle -Psigning.gnupg.keyName=$SIGNING_KEYID -Psigning.gnupg.executable=/opt/Garantir/bin/gpg -Psigning.gnupg.homeDir=$HOME/.gnupggrs publish
+    '''
+  }
 }
 
 pipeline {
@@ -34,6 +49,13 @@ pipeline {
     kubernetes {
       yaml kubePodTemplate(name: 'full_jnlp.yaml')
     }
+  }
+  parameters {
+    validatingString( name: 'TARGET_VERSION',
+                      defaultValue: 'NONE',
+                      description: 'Tag to create after successful QA',
+                      failedValidationMessage: 'Tag name must be NONE or a semantic version release or pre-release (i.e. no build metadata)',
+                      regex: /NONE|${globals.SVRE_PRE_RELEASE}/)
   }
   environment {
     ARTIFACTORY_CREDS = credentials('artifactory')
@@ -90,13 +112,17 @@ pipeline {
 
     stage('Publish[staging]') {
       when {
+        allOf {
+          expression { env.BRANCH_IS_PRIMARY }
           not {
-              buildingTag()
+            buildingTag()
           }
+        }
       }
       steps {
         script {
-          bumpVersion(true)
+          bumpVersion(getDevVersion())
+          gradlePublish()
         }
       }
       post {
@@ -106,48 +132,68 @@ pipeline {
       }
     }
 
-    // Publish the primary branch
-    stage('Publish') {
-      steps {
-        script {
-          if (env.BRANCH_IS_PRIMARY) {
-            // read the version name and determine if it is a release build
-            version = sh(returnStdout: true, script: 'bump-my-version show current_version').trim()
-            isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
-
-            withCredentials([usernamePassword(credentialsId: 'central-portal', passwordVariable: 'CP_PASSWORD', usernameVariable: 'CP_USER'), 
-                            certificate(credentialsId: 'cldtsdks-signing-cert', keystoreVariable: 'CODE_SIGNING_PFX_FILE', passwordVariable: 'CODE_SIGNING_P12_PASSWORD')]) {
-              sh '''
-                #!/bin/bash -e
-                # Configure the signing client
-                setup-garasign-client
-                # Get the key ID
-                SIGNING_KEYID=$(grep 'Key ID' $HOME/.gnupggrs/keysinfo.txt | awk 'NR==1{print $5}')
-                # Do a gradle publish that signs and uploads using the OSSRH creds
-                # upload destination logic is in build.gradle
-                gradle -Psigning.gnupg.keyName=$SIGNING_KEYID -Psigning.gnupg.executable=/opt/Garantir/bin/gpg -Psigning.gnupg.homeDir=$HOME/.gnupggrs publish
-              '''
-            }
-            // if it is a release build then do extra work
-            if (isReleaseVersion) {
-              // Upload from OSSRH staging API to central portal and publish
-              httpRequest(
-                authentication: 'central-portal',
-                httpMode: 'POST',
-                responseHandle: 'NONE',
-                url: 'https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/com.ibm.cloud?publishing_type=automatic',
-                validResponseCodes: '200',
-                wrapAsMultipart: false
-              )
-
-              // Create a git tag and a draft release
-              gitTagAndPublish {
-                isDraft=true
-                releaseApiUrl='https://api.github.com/repos/IBM/cloudant-spring/releases'
-              }
-            }
+    stage('Update version and tag') {
+      when {
+        beforeAgent true
+        allOf {
+          expression { env.BRANCH_IS_PRIMARY }
+          not {
+            equals expected: 'NONE', actual: "${params.TARGET_VERSION}"
           }
         }
+      }
+      steps {
+        gitsh('github.com') {
+          script {
+            bumpVersion(params.TARGET_VERSION)
+          }
+          sh 'git push --tags origin HEAD:main'
+        }
+      }
+    }
+
+    // Publish the primary branch
+    stage('Publish') {
+      when {
+        allOf {
+          buildingTag()
+          tag pattern: /v${env.SVRE_RELEASE}/, comparator: "REGEXP"
+        }
+      }
+      steps {
+        script {
+          gradlePublish()
+        }
+        // Upload from OSSRH staging API to central portal and publish
+        httpRequest(
+          authentication: 'central-portal',
+          httpMode: 'POST',
+          responseHandle: 'NONE',
+          url: 'https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/com.ibm.cloud?publishing_type=automatic',
+          validResponseCodes: '200',
+          wrapAsMultipart: false
+        )
+
+        httpRequest(
+          authentication: 'gh-sdks-automation',
+          contentType: 'APPLICATION_JSON_UTF8',
+          customHeaders: [[name: 'Accept', value: 'application/vnd.github+json']],
+          httpMode: 'POST',
+          outputFile: 'release_response.json',
+          requestBody: """
+            {
+              "tag_name": "${TAG_NAME}",
+              "name": "${TAG_NAME.replaceFirst('v','')} (${new Date(TAG_TIMESTAMP as long).format('yyyy-MM-dd')})",
+              "draft": false,
+              "prerelease": false,
+              "generate_release_notes": true
+            }
+            """.stripIndent(),
+          timeout: 60,
+          url: 'https://api.github.com/repos/IBM/cloudant-spring/releases',
+          validResponseCodes: '201',
+          wrapAsMultipart: false
+        )
       }
       post {
         always {
