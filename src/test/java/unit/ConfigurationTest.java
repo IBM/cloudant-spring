@@ -18,7 +18,6 @@ import com.ibm.cloud.cloudant.internal.CloudantFactory;
 import com.ibm.cloud.cloudant.v1.Cloudant;
 import com.ibm.cloud.cloudant.spring.boot.CloudantAutoConfiguration;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -59,8 +58,7 @@ class ConfigurationTest {
     @Autowired
     CloudantFactory serviceFactory;
 
-    @Mock
-    Cloudant cloudant;
+    Cloudant cloudant = Mockito.mock(Cloudant.class);
 
     @Test
     void testSetUrl() {
