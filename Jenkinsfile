@@ -44,6 +44,8 @@ def gradlePublish = {
   }
 }
 
+def springBootVersion
+
 pipeline {
   agent {
     kubernetes {
@@ -147,6 +149,17 @@ pipeline {
       }
       steps {
         gitsh('github.com') {
+          script {
+            def versionsToml = readTOML file: 'gradle/libs.versions.toml'
+            springBootVersion = versionsToml.versions.springBootVersion
+            def sampleBuildGradle = readFile 'sample/build.gradle'
+            sampleBuildGradle = sampleBuildGradle.replaceAll(
+              ~"(id 'org\\.springframework\\.boot' version ')[^']+(')",
+              "\$1${springBootVersion}\$2"
+            )
+            writeFile file: 'sample/build.gradle', text: sampleBuildGradle
+          }
+          sh "git add sample/build.gradle && git commit -m 'chore: update sample to spring boot ${springBootVersion}'"
           script {
             bumpVersion(params.TARGET_VERSION)
           }
