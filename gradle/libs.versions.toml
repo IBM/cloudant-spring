@@ -3,7 +3,7 @@ springBootVersion = "4.1.0"
 junitVersion = "6.1.1"
 
 [libraries]
-cloudant = { module = "com.ibm.cloud:cloudant", version = "0.10.19" }
+cloudant = { module = "com.ibm.cloud:cloudant", version = "0.10.20" }
 spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "springBootVersion" }
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "springBootVersion" }
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "springBootVersion" }
