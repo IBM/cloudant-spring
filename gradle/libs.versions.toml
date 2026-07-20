@@ -1,6 +1,6 @@
 [versions]
 springBootVersion = "4.1.0"
-junitVersion = "6.1.1"
+junitVersion = "6.1.2"
 
 [libraries]
 cloudant = { module = "com.ibm.cloud:cloudant", version = "0.10.20" }
