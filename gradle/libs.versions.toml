@@ -1,5 +1,5 @@
 [versions]
-springBootVersion = "4.1.0"
+springBootVersion = "4.1.1"
 junitVersion = "6.1.3"
 
 [libraries]
