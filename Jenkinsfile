@@ -190,32 +190,7 @@ pipeline {
           wrapAsMultipart: false
         )
 
-        httpRequest(
-          authentication: 'gh-sdks-automation',
-          contentType: 'APPLICATION_JSON_UTF8',
-          customHeaders: [[name: 'Accept', value: 'application/vnd.github+json']],
-          httpMode: 'POST',
-          outputFile: 'release_response.json',
-          requestBody: """
-            {
-              "tag_name": "${TAG_NAME}",
-              "name": "${TAG_NAME.replaceFirst('v','')} (${new Date(TAG_TIMESTAMP as long).format('yyyy-MM-dd')})",
-              "draft": false,
-              "prerelease": false,
-              "generate_release_notes": true
-            }
-            """.stripIndent(),
-          timeout: 60,
-          url: 'https://api.github.com/repos/IBM/cloudant-spring/releases',
-          validResponseCodes: '201',
-          wrapAsMultipart: false
-        )
-      }
-      post {
-        always {
-          sh "git config --unset credential.username || true"
-          sh "git config --unset credential.helper || true"
-        }
+        publishGitHubRelease(tag: env.TAG_NAME, title: "${TAG_NAME.replaceFirst('v','')} (${new Date(TAG_TIMESTAMP as long).format('yyyy-MM-dd')})")
       }
     }
   }
